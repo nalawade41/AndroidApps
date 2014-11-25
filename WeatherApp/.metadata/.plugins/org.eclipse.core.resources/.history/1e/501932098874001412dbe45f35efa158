@@ -1,0 +1,50 @@
+package common.base.app.farmerfriend.DALC;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import common.base.app.farmerfriend.Classes.DTO.LocationDTO;
+import common.base.app.farmerfriend.Database.Location;
+import android.content.ContentValues;
+import android.database.Cursor;
+
+public class LocationDALC implements IDatabaseDALC {
+
+	public static ContentValues createContentValuesToInsert(LocationDTO rowData) {
+		ContentValues values = new ContentValues();
+		values.put("LocationName", ((LocationDTO) rowData).getLocationName());
+		values.put("LocationLatitude",
+				((LocationDTO) rowData).getLocationLatitude());
+		values.put("LocationLongitude",
+				((LocationDTO) rowData).getLocationLongitude());
+		values.put("LocationTypeID",
+				((LocationDTO) rowData).getLocationTypeID());
+		values.put("GeoNameID", ((LocationDTO) rowData).getGeoNameID());
+		values.put("DateAdded", ((LocationDTO) rowData).getDateAdded()
+				.toString());
+		return values;
+	}
+
+	public static List<Object> getAllData(Cursor reader) {
+		List<Object> dataToReturn = new ArrayList<Object>();
+		int locationIDIndex = dataRead.getColumnIndex("LocationID");
+		int locationLatiIndex = dataRead.getColumnIndex("LocationLatitude");
+		int locationNameIndex = dataRead.getColumnIndex("LocationName");
+		int locationLongiIndex = dataRead.getColumnIndex("LocationLongitude");
+		int locationTypeIndex = dataRead.getColumnIndex("LocationTypeID");
+		int dateAddedIndex = dataRead.getColumnIndex(ADDED_TIME_KEY);
+		int geoNameIDIndex = dataRead.getColumnIndex("GeoNameID");
+		do {
+			Location dataRow = new Location();
+			dataRow.setLocationID(dataRead.getInt(locationIDIndex));
+			dataRow.setDateAdded(dataRead.getString(dateAddedIndex));
+			dataRow.setLocationLatitude(dataRead.getDouble(locationLatiIndex));
+			dataRow.setLocationLongitude(dataRead.getDouble(locationLongiIndex));
+			dataRow.setLocationName(dataRead.getString(locationNameIndex));
+			dataRow.setLocationTypeID(dataRead.getInt(locationTypeIndex));
+			dataRow.setGeoNameID(dataRead.getString(geoNameIDIndex));
+			dataToReturn.add(dataRow);
+		} while (dataRead.moveToNext());
+	}
+
+}

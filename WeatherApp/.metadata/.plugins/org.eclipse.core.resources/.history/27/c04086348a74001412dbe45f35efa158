@@ -1,0 +1,92 @@
+package common.base.app.farmerfriend.DALC;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import android.content.ContentValues;
+import android.database.Cursor;
+import common.base.app.farmerfriend.Classes.DTO.*;
+import common.base.app.farmerfriend.Database.WeatherDetail;
+
+public class WeatherDetailsDALC {
+
+	public static ContentValues createContentValuesToInsert(
+			WeatherDetailsDTO rowData) {
+		ContentValues values = new ContentValues();
+		values.put("LocationName",
+				((WeatherDetailsDTO) rowData).getLocationName());
+		values.put("WeatherLocationID", ((WeatherDetailsDTO) rowData)
+				.getWeatherLocationID().toString());
+		values.put("WeatherDate", ((WeatherDetailsDTO) rowData)
+				.getWeatherDate().toString());
+		values.put("Sunrise", ((WeatherDetailsDTO) rowData).getSunrise()
+				.toString());
+		values.put("Sunset", ((WeatherDetailsDTO) rowData).getSunset()
+				.toString());
+		values.put("Temperature",
+				((WeatherDetailsDTO) rowData).getTemperature());
+		values.put("MinTemperature",
+				((WeatherDetailsDTO) rowData).getMinTemperature());
+		values.put("MaxTemperature",
+				((WeatherDetailsDTO) rowData).getMaxTemperature());
+		values.put("Humidity", ((WeatherDetailsDTO) rowData).getHumidity());
+		values.put("Pressure", ((WeatherDetailsDTO) rowData).getPressure());
+		values.put("PressureGround",
+				((WeatherDetailsDTO) rowData).getPressureGround());
+		values.put("PressureSea",
+				((WeatherDetailsDTO) rowData).getPressureSea());
+		values.put("WindSpeed", ((WeatherDetailsDTO) rowData).getWindSpeed());
+		values.put("WindDegree", ((WeatherDetailsDTO) rowData).getWindDegree());
+		values.put("ConditionCode",
+				((WeatherDetailsDTO) rowData).getConditionCode());
+		values.put("Clouds", ((WeatherDetailsDTO) rowData).getClouds());
+		values.put("WeatherDateFrom", ((WeatherDetailsDTO) rowData)
+				.getWeatherDateFrom().toString());
+		values.put("WeatherDateTo", ((WeatherDetailsDTO) rowData)
+				.getWeatherDateTo().toString());
+		values.put("IsValidData",
+				((WeatherDetailsDTO) rowData).getIsValidData());
+		values.put("DateAdded", ((WeatherDetailsDTO) rowData).getDateAdded()
+				.toString());
+		return values;
+	}
+
+	@SuppressWarnings("deprecation")
+	public static List<Object> getAllData(Cursor reader) {
+		List<Object> dataToReturn = new ArrayList<Object>();
+		int weatherDetailsIDIndex = reader.getColumnIndex("WeatherDetailsID");
+		int locationNameIndex = reader.getColumnIndex("LocationName");
+		int weatherLocationIDIndex = reader.getColumnIndex("WeatherLocationID");
+		int weatherDateIndex = reader.getColumnIndex("WeatherDate");
+		int sunriseIndex = reader.getColumnIndex("Sunrise");
+		int sunsetIndex = reader.getColumnIndex("Sunset");
+		int temperatureIndex = reader.getColumnIndex("Temperature");
+		int minTemeratureIndex = reader.getColumnIndex("MinTemperature");
+		int maxTemperatureIndex = reader.getColumnIndex("MaxTemperature");
+		int humidityIndex = reader.getColumnIndex("Humidity");
+		int pressureIndex = reader.getColumnIndex("Pressure");
+		int pressureGroundIndex = reader.getColumnIndex("PressureGround");
+		int pressureSeaIndex = reader.getColumnIndex("PressureSea");
+		int conditionCodeIndex = reader.getColumnIndex("ConditionCode");
+		int windSpeedIndex = reader.getColumnIndex("WindSpeed");
+		int windDegreeIndex = reader.getColumnIndex("WindDegree");
+		int cloudsIndex = reader.getColumnIndex("Clouds");
+		int weatherDateFromIndex = reader.getColumnIndex("WeatherDateFrom");
+		int weatherDateToIndex = reader.getColumnIndex("WeatherDateTo");
+		int isValidDataIndex = reader.getColumnIndex("IsValidData");
+		int dateAddedIndex = reader.getColumnIndex("DateAdded");
+		
+		do {
+			WeatherDetailsDTO dataRow = new WeatherDetailsDTO();
+			dataRow.setWeatherDetailsID(reader.getInt(weatherDetailsIDIndex));
+			dataRow.setLocationName(reader.getString(locationNameIndex));
+			dataRow.setWeatherLocationID(reader.getString(weatherLocationIDIndex));
+			dataRow.setWeatherDate(new Date(reader.getString(weatherDateIndex)));
+			dataRow.setWeatherLocationID(reader
+					.getString(weatherLocationIDIndex));
+			dataToReturn.add(dataRow);
+		} while (reader.moveToNext());
+	}
+
+}

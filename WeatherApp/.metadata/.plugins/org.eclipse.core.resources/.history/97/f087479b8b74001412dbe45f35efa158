@@ -1,0 +1,22 @@
+package common.base.app.farmerfriend.DALC;
+
+import android.content.ContentValues;
+import common.base.app.farmerfriend.Classes.DTO.*;
+
+public class WeatherConditionCodeDALC {
+
+	public static ContentValues createContentValuesToInsert(
+			WeatherConditionCodeDTO rowData) {
+		ContentValues values = new ContentValues();
+		values.put("ConditionCode",
+				((WeatherConditionCodeDTO) rowData).getConditionCode());
+		values.put("Description",
+				((WeatherConditionCodeDTO) rowData).getDescription());
+		values.put("ImageName",
+				((WeatherConditionCodeDTO) rowData).getImageName());
+		values.put("DateAdded", ((WeatherConditionCodeDTO) rowData)
+				.getDateAdded().toString());
+		return values;
+	}
+
+}

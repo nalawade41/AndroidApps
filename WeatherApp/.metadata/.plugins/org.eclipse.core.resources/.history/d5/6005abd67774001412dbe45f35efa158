@@ -1,0 +1,28 @@
+package common.base.app.farmerfriend.Classes.DTO;
+
+import java.util.Date;
+
+public class WeatherDetail implements IDatabaseModels {
+	
+	public int WeatherDetailsID;
+	public String LocationName;
+	public String WeatherLocationID;
+	public Date WeatherDate;
+	public Date Sunrise;
+	public Date Sunset;
+	public double Temperature;
+	public double MinTemperature;
+	public double MaxTemperature;
+	public double Humidity;
+	public double Pressure;
+	public double PressureGround;
+	public double PressureSea;
+	public String ConditionCode;
+	public double WindSpeed;
+	public double WindDegree;
+	public String Clouds;
+	public Date WeatherDateFrom;
+	public Date WeatherDateTo;
+	public int IsValidData;
+	public Date DateAdded;
+}

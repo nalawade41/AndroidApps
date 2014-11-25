@@ -1,0 +1,48 @@
+package common.base.app.farmerfriend.DALC;
+
+import android.content.ContentValues;
+
+import common.base.app.farmerfriend.Classes.DTO.*;
+
+public class WeatherDetailsDALC {
+	public static ContentValues createContentValuesToInsert(
+			WeatherDetailsDTO rowData) {
+		ContentValues values = new ContentValues();
+		values.put("LocationName",
+				((WeatherDetailsDTO) rowData).getLocationName());
+		values.put("WeatherLocationID", ((WeatherDetailsDTO) rowData)
+				.getWeatherLocationID().toString());
+		values.put("WeatherDate", ((WeatherDetailsDTO) rowData)
+				.getWeatherDate().toString());
+		values.put("Sunrise", ((WeatherDetailsDTO) rowData).getSunrise()
+				.toString());
+		values.put("Sunset", ((WeatherDetailsDTO) rowData).getSunset()
+				.toString());
+		values.put("Temperature",
+				((WeatherDetailsDTO) rowData).getTemperature());
+		values.put("MinTemperature",
+				((WeatherDetailsDTO) rowData).getMinTemperature());
+		values.put("MaxTemperature",
+				((WeatherDetailsDTO) rowData).getMaxTemperature());
+		values.put("Humidity", ((WeatherDetailsDTO) rowData).getHumidity());
+		values.put("Pressure", ((WeatherDetailsDTO) rowData).getPressure());
+		values.put("PressureGround",
+				((WeatherDetailsDTO) rowData).getPressureGround());
+		values.put("PressureSea",
+				((WeatherDetailsDTO) rowData).getPressureSea());
+		values.put("WindSpeed", ((WeatherDetailsDTO) rowData).getWindSpeed());
+		values.put("WindDegree", ((WeatherDetailsDTO) rowData).getWindDegree());
+		values.put("ConditionCode",
+				((WeatherDetailsDTO) rowData).getConditionCode());
+		values.put("Clouds", ((WeatherDetailsDTO) rowData).getClouds());
+		values.put("WeatherDateFrom", ((WeatherDetailsDTO) rowData)
+				.getWeatherDateFrom().toString());
+		values.put("WeatherDateTo", ((WeatherDetailsDTO) rowData)
+				.getWeatherDateTo().toString());
+		values.put("IsValidData",
+				((WeatherDetailsDTO) rowData).getIsValidData());
+		values.put("DateAdded", ((WeatherDetailsDTO) rowData).getDateAdded()
+				.toString());
+		return values;
+	}
+}

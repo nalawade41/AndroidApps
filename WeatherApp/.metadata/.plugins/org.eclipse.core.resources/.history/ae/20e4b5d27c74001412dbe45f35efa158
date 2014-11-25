@@ -1,0 +1,7 @@
+package common.base.app.farmerfriend.Classes.DTO;
+
+import common.base.app.farmerfriend.DALC.IDatabaseDALC;
+
+public interface IDatabaseModels {
+	public static IDatabaseDALC ClassToExecute = null;
+}

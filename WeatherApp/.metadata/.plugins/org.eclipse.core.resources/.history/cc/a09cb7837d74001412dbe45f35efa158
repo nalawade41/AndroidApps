@@ -1,0 +1,10 @@
+package common.base.app.farmerfriend.DALC;
+
+import android.content.ContentValues;
+
+public class LocationDALC implements IDatabaseDALC{
+
+	public static createContentValuestoInsert(){
+		ContentValues values = new ContentValues();
+	}
+}

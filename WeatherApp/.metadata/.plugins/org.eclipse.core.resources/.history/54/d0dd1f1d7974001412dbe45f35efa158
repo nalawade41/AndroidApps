@@ -1,0 +1,21 @@
+package common.base.app.farmerfriend.Classes.DTO;
+
+import java.util.Date;
+
+import common.base.app.farmerfriend.Classes.Result.*;
+
+public class Location implements IDatabaseModels {
+	
+	public int LocationID;
+	public String LocationName;
+	public double LocationLatitude;
+	public double LocationLongitude;
+	public String GeoNameID;
+	public int LocationTypeID;
+	public String WeatherLocationID;
+	public Date DateAdded;
+	public Location() {
+		super();
+	}
+	
+}

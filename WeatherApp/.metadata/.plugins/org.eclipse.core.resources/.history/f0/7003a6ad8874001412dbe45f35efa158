@@ -1,0 +1,44 @@
+package common.base.app.farmerfriend.DALC;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import android.content.ContentValues;
+import android.database.Cursor;
+import common.base.app.farmerfriend.Classes.DTO.*;
+
+public class LocationTypeDALC implements IDatabaseDALC {
+	
+	public static ContentValues createContentValuesToInsert(
+			LocationTypeDTO rowData) {
+		ContentValues values = new ContentValues();
+		values.put("LocationType",
+				((LocationTypeDTO) rowData).getLocationType());
+		values.put("DateAdded", ((LocationTypeDTO) rowData).getDateAdded()
+				.toString());
+		return values;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static List<Object> getAllData(Cursor reader) {
+		List<Object> dataToReturn = new ArrayList<Object>();
+		
+		int locationTypeIndex = reader.getColumnIndex("LocationType");
+		int locationTypeIndex = reader.getColumnIndex("LocationTypeID");
+		int dateAddedIndex = reader.getColumnIndex("DateAdded");
+		do {
+			LocationDTO dataRow = new LocationDTO();
+			dataRow.setLocationID(reader.getInt(locationIDIndex));
+			dataRow.setDateAdded(new Date(reader.getString(dateAddedIndex)));
+			dataRow.setLocationLatitude(reader.getDouble(locationLatiIndex));
+			dataRow.setLocationLongitude(reader.getDouble(locationLongiIndex));
+			dataRow.setLocationName(reader.getString(locationNameIndex));
+			dataRow.setLocationTypeID(reader.getInt(locationTypeIndex));
+			dataRow.setGeoNameID(reader.getString(geoNameIDIndex));
+			dataRow.setWeatherLocationID(reader.getString(weatherLocationID));
+			dataToReturn.add(dataRow);
+		} while (reader.moveToNext());
+		return dataToReturn;
+	}
+}

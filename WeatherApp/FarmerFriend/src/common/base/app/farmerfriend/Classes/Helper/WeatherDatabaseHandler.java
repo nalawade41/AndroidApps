@@ -1,25 +1,23 @@
 package common.base.app.farmerfriend.Classes.Helper;
 
 import java.util.*;
-
 import common.base.app.farmerfriend.Classes.DTO.*;
 import common.base.app.farmerfriend.Database.*;
 import android.content.Context;
 
 public class WeatherDatabaseHandler {
-	
-	public static DatabaseHelper dbHelper;
 
-	@SuppressWarnings("unchecked")
+	public static DatabaseExecuter dbExecuter;
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static String[] GetCityListToBind(Context context) {
-		dbHelper = new DatabaseHelper(context);
+		dbExecuter = new DatabaseExecuter(context);
 		String query = "SELECT * FROM " + DatabaseHelper.TABLE_LOCATIONS;
-		WeatherSharedDataHolder.LocationList = (List<Location>) (List) dbHelper
-				.getRecordData(query, DatabaseHelper.TABLE_LOCATIONS);
+		WeatherSharedDataHolder.LocationList = (List<LocationDTO>) (List) dbExecuter
+				.getTableData(query, DatabaseHelper.TABLE_LOCATIONS);
 		if (WeatherSharedDataHolder.LocationList != null) {
 			List<String> allCityList = new ArrayList<String>();
-			for (Location locationToAdd : WeatherSharedDataHolder.LocationList) {
-				// if(locationToAdd._locationTypeID == 1)
+			for (LocationDTO locationToAdd : WeatherSharedDataHolder.LocationList) {
 				allCityList.add(locationToAdd.getLocationName());
 			}
 			return allCityList.toArray(new String[0]);
@@ -30,13 +28,14 @@ public class WeatherDatabaseHandler {
 	@SuppressWarnings("unchecked")
 	public static HashMap<String, Integer> GetAvailableLocationTypes(
 			Context context) {
-		dbHelper = new DatabaseHelper(context);
+		dbExecuter = new DatabaseExecuter(context);
 		String query = "SELECT * FROM " + DatabaseHelper.TABLE_LOCATIONTYPES;
-		List<LocationType> allTypes = (List<LocationType>) (List) dbHelper
-				.getRecordData(query, DatabaseHelper.TABLE_LOCATIONTYPES);
+		@SuppressWarnings("rawtypes")
+		List<LocationTypeDTO> allTypes = (List<LocationTypeDTO>) (List) dbExecuter
+				.getTableData(query, DatabaseHelper.TABLE_LOCATIONTYPES);
 		if (allTypes != null) {
 			HashMap<String, Integer> allLocationTypes = new HashMap<String, Integer>();
-			for (LocationType locationTypeToAdd : allTypes) {
+			for (LocationTypeDTO locationTypeToAdd : allTypes) {
 				allLocationTypes.put(locationTypeToAdd.getLocationType(),
 						locationTypeToAdd.getLocationTypeID());
 			}
@@ -44,5 +43,4 @@ public class WeatherDatabaseHandler {
 		}
 		return null;
 	}
-
 }

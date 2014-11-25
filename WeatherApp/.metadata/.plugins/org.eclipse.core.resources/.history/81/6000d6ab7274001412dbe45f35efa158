@@ -1,0 +1,32 @@
+package common.base.app.farmerfriend.Database;
+
+public class TableDefination {
+
+	// Table Names
+	public static final String TABLE_LOCATIONS = "Locations";
+	public static final String TABLE_LOCATIONTYPES = "LocationTypes";
+	public static final String TABLE_WEATHER_DETAILS = "WeatherDetails";
+	public static final String TABLE_CURRENT_WEATHEER = "CurrentWeather"
+	
+	// Repeated columns
+	private static final String PRIMARY_KEY = "ID";
+	private static final String ADDED_TIME_KEY = "DateAdded";
+
+	protected static final String CREATE_TABLE_LOCATIONS = "CREATE TABLE "
+			+ TABLE_LOCATIONS + "(" + "Location" + PRIMARY_KEY
+			+ " INTEGER PRIMARY KEY," + " LocationName TEXT,"
+			+ " LocationLatitude REAL," + " LocationLongitude REAL,"
+			+ " GeoNameID TEXT," + " LocationTypeID INTEGER," + ADDED_TIME_KEY
+			+ " DATETIME" + ")";
+	protected static final String CREATE_TABLE_LOCATION_TYPE = "CREATE TABLE "
+			+ TABLE_LOCATIONTYPES + "(" + "LocationType" + PRIMARY_KEY
+			+ " INTEGER PRIMARY KEY," + " LocationType TEXT," + ADDED_TIME_KEY
+			+ " DATETIME" + ")";
+	protected static final String CREATE_TABLE_WEATHER_DETAILS = "CREATE TABLE "
+			+ TABLE_WEATHER_DETAILS + "(" + "WeatherDetails" + PRIMARY_KEY
+			+ " INTEGER PRIMARY KEY," + " Location" + PRIMARY_KEY + " INTEGER,"
+			+ " LocationName TEXT,"
+			+ " WeatherLocationID TEXT," + ADDED_TIME_KEY + " DATETIME" + ")";
+	
+	protected static final String 
+}

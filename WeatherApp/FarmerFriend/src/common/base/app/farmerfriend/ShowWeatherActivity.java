@@ -2,19 +2,15 @@ package common.base.app.farmerfriend;
 
 import java.io.*;
 import java.lang.reflect.Field;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import common.base.app.farmerfriend.Classes.DTO.Location;
-import common.base.app.farmerfriend.Classes.Helper.WeatherSharedDataHolder;
-import common.base.app.farmerfriend.Classes.Parser.CurrentWeatherParser;
-import common.base.app.farmerfriend.Classes.Parser.IJsonParser;
+import common.base.app.farmerfriend.Classes.DTO.*;
+import common.base.app.farmerfriend.Classes.Helper.*;
+import common.base.app.farmerfriend.Classes.Parser.*;
 import common.base.app.farmerfriend.Classes.Result.CurrentWeatherResult;
 import android.support.v7.app.ActionBarActivity;
 import android.annotation.SuppressLint;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +20,8 @@ import android.widget.*;
 public class ShowWeatherActivity extends ActionBarActivity {
 
 	private static final String EXTRA_MESSAGE = "Extra_Message";
-	private static Location _weatherLocation;
+	@SuppressWarnings("unused")
+	private static LocationDTO _weatherLocation;
 	private IJsonParser _parser;
 	private List<CurrentWeatherResult> _currentWeather;
 
@@ -39,7 +36,7 @@ public class ShowWeatherActivity extends ActionBarActivity {
 			Boolean flagToBreak = false;
 			for (int i = 0; i < WeatherSharedDataHolder.CityList.length; i++) {
 				if (WeatherSharedDataHolder.CityList[i].equals(value)) {
-					for (Location location : WeatherSharedDataHolder.LocationList) {
+					for (LocationDTO location : WeatherSharedDataHolder.LocationList) {
 						if (location.getLocationName().equals(value)) {
 							_weatherLocation = location;
 							flagToBreak = true;
@@ -52,6 +49,7 @@ public class ShowWeatherActivity extends ActionBarActivity {
 			}
 		}
 		ProcessWeatherApi(value);
+
 	}
 
 	@Override
@@ -81,6 +79,7 @@ public class ShowWeatherActivity extends ActionBarActivity {
 
 	private class GetWeatherData extends AsyncTask<String, String, String> {
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
 		protected String doInBackground(String... params) {
 			// progressDialog.show();
@@ -107,9 +106,7 @@ public class ShowWeatherActivity extends ActionBarActivity {
 
 		@Override
 		protected void onPreExecute() {
-			// progressDialog = ProgressDialog.show(ShowWeatherActivity.this,
-			// "Weather Data", "Downloading weather data");
-			// progressDialog.setCancelable(false);
+
 		}
 
 		@SuppressLint({ "DefaultLocale", "SimpleDateFormat" })
@@ -124,8 +121,10 @@ public class ShowWeatherActivity extends ActionBarActivity {
 					((ScrollView) findViewById(R.id.sclvWeatherData))
 							.setVisibility(View.VISIBLE);
 					((ImageView) findViewById(R.id.imgvWeatherImgage))
-							.setImageDrawable(getWeatherImageNameToDisplay(currentWeather
-									.getWeatherStateId()));
+							.setImageDrawable(WeatherUIHelper
+									.getWeatherImageNameToDisplay(
+											ShowWeatherActivity.this,
+											currentWeather.getWeatherStateId()));
 					((TextView) findViewById(R.id.tvWeatherDescription))
 							.setText(currentWeather.getWeatherDescription());
 					((TextView) findViewById(R.id.tvWeatherAvgTemp))
@@ -144,10 +143,13 @@ public class ShowWeatherActivity extends ActionBarActivity {
 										Date.class)) {
 									valueView
 											.setText(new SimpleDateFormat(
-													getDateFormatString(toCamelCase(property[i]
-															.getName()
-															.substring(1)
-															.toLowerCase())))
+													ValidationHelper
+															.getDateFormatString(MiscellaneousHelper
+																	.toCamelCase(property[i]
+																			.getName()
+																			.substring(
+																					1)
+																			.toLowerCase())))
 													.format(value).toString());
 
 								} else {
@@ -157,9 +159,10 @@ public class ShowWeatherActivity extends ActionBarActivity {
 										getBaseContext());
 								TextView attributeView = new TextView(
 										getBaseContext());
-								
-								attributeView.setText(toCamelCase(property[i]
-										.getName().substring(1).toLowerCase()));
+
+								attributeView.setText(MiscellaneousHelper
+										.toCamelCase(property[i].getName()
+												.substring(1).toLowerCase()));
 								rowToAdd.addView(attributeView);
 								rowToAdd.addView(valueView);
 								((TableLayout) findViewById(R.id.tbllWeatherData))
@@ -173,82 +176,4 @@ public class ShowWeatherActivity extends ActionBarActivity {
 			}
 		}
 	}
-
-	private Drawable getWeatherImageNameToDisplay(String weatherId) {
-		int num = Integer.valueOf(weatherId);
-		Drawable drawable = null;
-		if (isBetween(num, 200, 232)) {
-			drawable = getResources().getDrawable(
-					getResources().getIdentifier("ic_11d", "drawable",
-							this.getPackageName()));
-		} else if (isBetween(num, 300, 321)) {
-			drawable = getResources().getDrawable(
-					getResources().getIdentifier("ic_09d", "drawable",
-							this.getPackageName()));
-		} else if (isBetween(num, 500, 504)) {
-			drawable = getResources().getDrawable(
-					getResources().getIdentifier("ic_10d", "drawable",
-							this.getPackageName()));
-		} else if (isBetween(num, 511, 511)) {
-			drawable = getResources().getDrawable(
-					getResources().getIdentifier("ic_13d", "drawable",
-							this.getPackageName()));
-		} else if (isBetween(num, 520, 531)) {
-			drawable = getResources().getDrawable(
-					getResources().getIdentifier("ic_09d", "drawable",
-							this.getPackageName()));
-		} else if (isBetween(num, 600, 322)) {
-			drawable = getResources().getDrawable(
-					getResources().getIdentifier("ic_13d", "drawable",
-							this.getPackageName()));
-		} else if (isBetween(num, 701, 781)) {
-			drawable = getResources().getDrawable(
-					getResources().getIdentifier("ic_50d", "drawable",
-							this.getPackageName()));
-		} else if (isBetween(num, 800, 800)) {
-			drawable = getResources().getDrawable(
-					getResources().getIdentifier("ic_01d", "drawable",
-							this.getPackageName()));
-		} else if (isBetween(num, 801, 801)) {
-			drawable = getResources().getDrawable(
-					getResources().getIdentifier("ic_02d", "drawable",
-							this.getPackageName()));
-		} else if (isBetween(num, 802, 802)) {
-			drawable = getResources().getDrawable(
-					getResources().getIdentifier("ic_03d", "drawable",
-							this.getPackageName()));
-		} else if (isBetween(num, 803, 804)) {
-			drawable = getResources().getDrawable(
-					getResources().getIdentifier("ic_04d", "drawable",
-							this.getPackageName()));
-		}
-		return drawable;
-	}
-
-	private static boolean isBetween(int x, int lower, int upper) {
-		return lower <= x && x <= upper;
-	}
-
-	private static String toCamelCase(String s) {
-		String[] parts = s.split("_");
-		String camelCaseString = "";
-		for (String part : parts) {
-			camelCaseString += toProperCase(part);
-			camelCaseString += " ";
-		}
-		return camelCaseString;
-	}
-
-	@SuppressLint("DefaultLocale")
-	private static String toProperCase(String s) {
-		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
-	}
-
-	private String getDateFormatString(String attribute) {
-		if (attribute.equalsIgnoreCase("Weather Date "))
-			return "EEE, dd MMM";
-		else
-			return "K:mm:ss";
-	}
-
 }

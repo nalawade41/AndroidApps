@@ -1,0 +1,11 @@
+package common.base.app.farmerfriend.Classes.DTO;
+
+import java.util.Date;
+import common.base.app.farmerfriend.Classes.Result.*;
+
+public class LocationTypeDTO implements IDatabaseModels {
+	
+	public int LocationTypeID;
+	public String LocationType;
+	public Date DateAdded; 
+}

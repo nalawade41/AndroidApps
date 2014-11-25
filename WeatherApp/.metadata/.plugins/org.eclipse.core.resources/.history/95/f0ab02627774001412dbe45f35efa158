@@ -1,0 +1,8 @@
+package common.base.app.farmerfriend.Classes.DTO;
+
+import java.util.Date;
+
+public class WeatherDetail implements IDatabaseModels {
+	
+	
+}

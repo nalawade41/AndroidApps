@@ -1,0 +1,22 @@
+package common.base.app.farmerfriend.DALC;
+
+import common.base.app.farmerfriend.Classes.DTO.IDatabaseModels;
+import common.base.app.farmerfriend.Classes.DTO.LocationDTO;
+import android.content.ContentValues;
+
+public class LocationDALC implements IDatabaseDALC {
+
+	public static void createContentValuestoInsert(LocationDTO rowData) {
+		ContentValues values = new ContentValues();
+		values.put("LocationName", ((LocationDTO) rowData).getLocationName());
+		values.put("LocationLatitude",
+				((LocationDTO) rowData).getLocationLatitude());
+		values.put("LocationLongitude",
+				((LocationDTO) rowData).getLocationLongitude());
+		values.put("LocationTypeID",
+				((LocationDTO) rowData).getLocationTypeID());
+		values.put("GeoNameID", ((LocationDTO) rowData).getGeoNameID());
+		values.put(ADDED_TIME_KEY, ((LocationDTO) rowData).getDateAdded()
+				.toString());
+	}
+}

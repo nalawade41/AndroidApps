@@ -1,0 +1,151 @@
+package common.base.app.farmerfriend.Database;
+
+import java.util.*;
+import common.base.app.farmerfriend.Classes.DTO.*;
+import android.content.*;
+import android.database.Cursor;
+import android.database.sqlite.*;
+
+public class DatabaseHelper extends SQLiteOpenHelpe{
+	// Logcat tag
+	//private static final String LOG = "DatabaseHelper";
+	// Database Version
+	private static final int DATABASE_VERSION = 1;
+	// Database Name
+	private static final String DATABASE_NAME = "myFarmDatabase";
+	// Create table queries
+	
+
+	public DatabaseHelper(Context context) {
+
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
+	}
+
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		db.execSQL(CREATE_TABLE_LOCATIONS);
+		db.execSQL(CREATE_TABLE_LOCATION_TYPE);
+		db.execSQL(CREATE_TABLE_WEATHER_DETAILS);
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		// on upgrade drop older tables
+		db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_LOCATIONS);
+		db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_LOCATION_TYPE);
+		db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_WEATHER_DETAILS);
+		// create new tables
+		onCreate(db);
+	}
+
+	public long insertRecord(IDatabaseModels rowData, String tableName) {
+		if (rowData != null) {
+			SQLiteDatabase db = this.getWritableDatabase();
+			ContentValues values = new ContentValues();
+			if (rowData instanceof Location) {
+				values.put("LocationName",
+						((Location) rowData).getLocationName());
+				values.put("LocationLatitude",
+						((Location) rowData).getLocationLatitude());
+				values.put("LocationLongitude",
+						((Location) rowData).getLocationLongitude());
+				values.put("LocationTypeID",
+						((Location) rowData).getLocationTypeID());
+				values.put("GeoNameID", ((Location) rowData).getGeoNameID());
+				values.put(ADDED_TIME_KEY, ((Location) rowData).getDateAdded()
+						.toString());
+			} else if (rowData instanceof LocationType) {
+				values.put("LocationType",
+						((LocationType) rowData).getLocationType());
+				values.put(ADDED_TIME_KEY, ((LocationType) rowData)
+						.getDateAdded().toString());
+			} else if (rowData instanceof WeatherDetail) {
+				values.put("LocationID",
+						((WeatherDetail) rowData).getLocationID());
+				values.put("WeatherLocationID",
+						((WeatherDetail) rowData).getWeatherLocationID());
+				values.put(ADDED_TIME_KEY, ((WeatherDetail) rowData)
+						.getDateAdded().toString());
+			}
+			return db.insert(tableName, null, values);
+		}
+		return -1;
+	}
+
+	public List<Object> getRecordData(String sqlQuery, String tableName) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		List<Object> dataToReturn = null;
+		Cursor dataRead = db.rawQuery(sqlQuery, null);
+		if (dataRead != null && dataRead.moveToFirst()) {
+			if (tableName.equals(TABLE_LOCATIONS)) {
+				dataToReturn = new ArrayList<Object>();
+				int locationIDIndex = dataRead.getColumnIndex("LocationID");
+				int locationLatiIndex = dataRead
+						.getColumnIndex("LocationLatitude");
+				int locationNameIndex = dataRead.getColumnIndex("LocationName");
+				int locationLongiIndex = dataRead
+						.getColumnIndex("LocationLongitude");
+				int locationTypeIndex = dataRead
+						.getColumnIndex("LocationTypeID");
+				int dateAddedIndex = dataRead.getColumnIndex(ADDED_TIME_KEY);
+				int geoNameIDIndex = dataRead.getColumnIndex("GeoNameID");
+				do {
+					Location dataRow = new Location();
+					dataRow.setLocationID(dataRead.getInt(locationIDIndex));
+					dataRow.setDateAdded(dataRead.getString(dateAddedIndex));
+					dataRow.setLocationLatitude(dataRead
+							.getDouble(locationLatiIndex));
+					dataRow.setLocationLongitude(dataRead
+							.getDouble(locationLongiIndex));
+					dataRow.setLocationName(dataRead
+							.getString(locationNameIndex));
+					dataRow.setLocationTypeID(dataRead
+							.getInt(locationTypeIndex));
+					dataRow.setGeoNameID(dataRead.getString(geoNameIDIndex));
+					dataToReturn.add(dataRow);
+				} while (dataRead.moveToNext());
+			}
+			if (tableName.equals(TABLE_LOCATIONTYPES)) {
+				dataToReturn = new ArrayList<Object>();
+				int locationTypeIDIndex = dataRead
+						.getColumnIndex("LocationTypeID");
+				int locationTypeIndex = dataRead.getColumnIndex("LocationType");
+				int dateAddedIndex = dataRead.getColumnIndex(ADDED_TIME_KEY);
+				do {
+					LocationType dataRow = new LocationType();
+					dataRow.setDateAdded(dataRead.getString(dateAddedIndex));
+					dataRow.setLocationTypeID(dataRead
+							.getInt(locationTypeIDIndex));
+					dataRow.setLocationType(dataRead
+							.getString(locationTypeIndex));
+					dataToReturn.add(dataRow);
+				} while (dataRead.moveToNext());
+			}
+			if (tableName.equals(TABLE_WEATHER_DETAILS)) {
+				dataToReturn = new ArrayList<Object>();
+				int locationIDIndex = dataRead.getColumnIndex("LocationID");
+				int weatherLocationIDIndex = dataRead
+						.getColumnIndex("WeatherLocationID");
+				int weatherDetailsIDIndex = dataRead
+						.getColumnIndex("WeatherDetailsID");
+				int dateAddedIndex = dataRead.getColumnIndex(ADDED_TIME_KEY);
+				do {
+					WeatherDetail dataRow = new WeatherDetail();
+					dataRow.setLocationID(dataRead.getInt(locationIDIndex));
+					dataRow.setDateAdded(dataRead.getString(dateAddedIndex));
+					dataRow.setWeatherDetailsID(dataRead
+							.getInt(weatherDetailsIDIndex));
+					dataRow.setWeatherLocationID(dataRead
+							.getString(weatherLocationIDIndex));
+					dataToReturn.add(dataRow);
+				} while (dataRead.moveToNext());
+			}
+		}
+		return dataToReturn;
+	}
+
+	public void FirstRunDeletion(Context context) {
+		context.deleteDatabase(DATABASE_NAME);
+	}
+}

@@ -24,7 +24,7 @@ public class StartWeatherActivity extends ActionBarActivity implements
 		WeatherUIHelper.fillCitySelectionAutoComplete(
 				(AutoCompleteTextView) findViewById(R.id.atvCitySelection),
 				getApplicationContext(), this);
-		 showWeather((new View(getBaseContext())));
+		 //showWeather((new View(getBaseContext())));
 	}
 
 	@Override
@@ -73,10 +73,10 @@ public class StartWeatherActivity extends ActionBarActivity implements
 	public void showWeather(View view) {
 		Intent newActiviytyIntent = new Intent(getBaseContext(),
 				ShowWeatherActivity.class);
-//		newActiviytyIntent.putExtra(EXTRA_MESSAGE,
-//				((AutoCompleteTextView) findViewById(R.id.atvCitySelection))
-//						.getText().toString());
-		 newActiviytyIntent.putExtra(EXTRA_MESSAGE, "Sangli");
+		newActiviytyIntent.putExtra(EXTRA_MESSAGE,
+				((AutoCompleteTextView) findViewById(R.id.atvCitySelection))
+						.getText().toString());
+		 //newActiviytyIntent.putExtra(EXTRA_MESSAGE, "Sangli");
 		startActivity(newActiviytyIntent);
 	}
 

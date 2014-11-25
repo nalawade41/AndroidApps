@@ -1,0 +1,38 @@
+package common.base.app.farmerfriend.DALC;
+
+import android.content.ContentValues;
+
+import common.base.app.farmerfriend.Classes.DTO.*;
+
+public class WeatherDetailsDALC {
+	public static ContentValues createContentValuesToInsert(
+			WeatherDetailsDTO rowData) {
+		ContentValues values = new ContentValues();
+		values.put("LocationName",
+				((WeatherDetailsDTO) rowData).getLocationName());
+		values.put("WeatherLocationID", ((WeatherDetailsDTO) rowData)
+				.getWeatherLocationID().toString());
+		values.put("WeatherDate", ((WeatherDetailsDTO) rowData)
+				.getWeatherDate().toString());
+		values.put("Sunrise", ((WeatherDetailsDTO) rowData).getSunrise()
+				.toString());
+		values.put("Sunset", ((WeatherDetailsDTO) rowData).getSunset()
+				.toString());
+		
+		
+		values.put("Temperature", ((WeatherDetailsDTO) rowData).getTemperature());
+		values.put("LocationType",
+				((WeatherDetailsDTO) rowData).getLocationType());
+		values.put("DateAdded", ((WeatherDetailsDTO) rowData).getDateAdded()
+				.toString());
+		values.put("LocationType",
+				((WeatherDetailsDTO) rowData).getLocationType());
+		values.put("DateAdded", ((WeatherDetailsDTO) rowData).getDateAdded()
+				.toString());
+		values.put("LocationType",
+				((WeatherDetailsDTO) rowData).getLocationType());
+		values.put("DateAdded", ((WeatherDetailsDTO) rowData).getDateAdded()
+				.toString());
+		return values;
+	}
+}

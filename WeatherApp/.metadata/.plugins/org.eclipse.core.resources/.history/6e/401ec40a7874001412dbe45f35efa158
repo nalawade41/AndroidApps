@@ -1,0 +1,66 @@
+package common.base.app.farmerfriend.Classes.DTO;
+
+import java.util.Date;
+import common.base.app.farmerfriend.Classes.Result.*;
+
+public class LocationType implements IDatabaseModels {
+	int _locationTypeID;
+	int _locationID;
+	String _locationType;
+	String _dateAdded;
+
+	public LocationType() {
+	}
+
+	public LocationType(GeonameResult result) {
+		this._locationType = result.LocationType;
+		this._dateAdded = (new Date()).toString();
+	}
+
+	public LocationType(int locationTypeID, int locationID, String locationType) {
+		this._dateAdded = (new Date()).toString();
+		;
+		this._locationID = locationID;
+		this._locationTypeID = locationTypeID;
+		this._locationType = locationType;
+	}
+
+	public LocationType(int locationID, String locationType) {
+		this._dateAdded = (new Date()).toString();
+		;
+		this._locationID = locationID;
+		this._locationType = locationType;
+	}
+
+	public int getLocationTypeID() {
+		return _locationTypeID;
+	}
+
+	public void setLocationTypeID(int _locationTypeID) {
+		this._locationTypeID = _locationTypeID;
+	}
+
+	public int getLocationID() {
+		return _locationID;
+	}
+
+	public void setLocationID(int _locationID) {
+		this._locationID = _locationID;
+	}
+
+	public String getLocationType() {
+		return _locationType;
+	}
+
+	public void setLocationType(String _locationType) {
+		this._locationType = _locationType;
+	}
+
+	public String getDateAdded() {
+		return _dateAdded;
+	}
+
+	public void setDateAdded(String _dateAdded) {
+		this._dateAdded = (_dateAdded).toString();
+	}
+}

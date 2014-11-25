@@ -1,0 +1,13 @@
+package common.base.app.farmerfriend.Classes.DTO;
+
+public class WeatherTypeDTO implements IDatabaseModels{
+	
+	public int WeatherTypeID;
+	public String WeatherType;
+	public Date DateAdded;
+	"CREATE TABLE "
+			+ TABLE_WEATHEER_TYPE + "(" + "WeatherType" + PRIMARY_KEY
+			+ " INTEGER PRIMARY KEY," + " WeatherType TEXT," + ADDED_TIME_KEY
+			+ " DATETIME" + ")";
+
+}

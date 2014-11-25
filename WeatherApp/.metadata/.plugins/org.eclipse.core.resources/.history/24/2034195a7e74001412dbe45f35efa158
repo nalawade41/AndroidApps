@@ -1,0 +1,17 @@
+package common.base.app.farmerfriend.DALC;
+
+import android.content.ContentValues;
+import common.base.app.farmerfriend.Classes.DTO.*;
+import common.base.app.farmerfriend.Database.LocationType;
+
+public class LocationTypeDALC implements IDatabaseDALC {
+	public static ContentValues createContentValuesToInsert(
+			LocationTypeDTO rowData) {
+		ContentValues values = new ContentValues();
+		values.put("LocationType",
+				((LocationType) rowData).getLocationType());
+		values.put(ADDED_TIME_KEY, ((LocationType) rowData)
+				.getDateAdded().toString());
+		return values;
+	}
+}

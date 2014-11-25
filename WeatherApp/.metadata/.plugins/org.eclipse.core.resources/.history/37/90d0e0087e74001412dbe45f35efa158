@@ -1,0 +1,9 @@
+package common.base.app.farmerfriend.DALC;
+
+import android.content.ContentValues;
+
+import common.base.app.farmerfriend.Classes.DTO.LocationDTO;
+
+public class LocationTypeDALC implements IDatabaseDALC{
+	public static ContentValues createContentValuesToInsert(LocationDTO rowData)
+}

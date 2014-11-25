@@ -1,0 +1,10 @@
+package common.base.app.farmerfriend.Classes.DTO;
+
+public class WeatherTypeDTO implements IDatabaseModels{
+	
+	public int WeatherTypeID;
+	public String WeatherType;
+	public Date DateAdded;
+	
+	
+}

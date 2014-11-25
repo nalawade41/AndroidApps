@@ -1,0 +1,35 @@
+package common.base.app.farmerfriend.DALC;
+
+import java.util.*;
+
+import android.content.ContentValues;
+import android.database.Cursor;
+import common.base.app.farmerfriend.Classes.DTO.*;
+
+public class WeatherTypeDALC implements IDatabaseDALC {
+
+	public static ContentValues createContentValuesToInsert(
+			WeatherTypeDTO rowData) {
+		ContentValues values = new ContentValues();
+		values.put("WeatherType", ((WeatherTypeDTO) rowData).getWeatherType());
+		values.put("DateAdded", ((WeatherTypeDTO) rowData).getDateAdded()
+				.toString());
+		return values;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static List<Object> getAllData(Cursor reader) {
+		List<Object> dataToReturn = new ArrayList<Object>();
+		int weatherTypeIndex = reader.getColumnIndex("WeatherType");
+		int weatherTypeIDIndex = reader.getColumnIndex("WeatherTypeID");
+		int dateAddedIndex = reader.getColumnIndex("DateAdded");
+		do {
+			WeatherTypeDTO dataRow = new WeatherTypeDTO();
+			dataRow.setWeatherTypeID(reader.getInt(weatherTypeIDIndex));
+			dataRow.setDateAdded(new Date(reader.getString(dateAddedIndex)));
+			dataRow.setWeatherType(reader.getString(weatherTypeIndex));
+			dataToReturn.add(dataRow);
+		} while (reader.moveToNext());
+		return dataToReturn;
+	}
+}

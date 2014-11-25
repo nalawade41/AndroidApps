@@ -1,0 +1,17 @@
+package common.base.app.farmerfriend.DALC;
+
+import android.content.ContentValues;
+
+import common.base.app.farmerfriend.Classes.DTO.*;
+
+public class WeatherTypeDALC implements IDatabaseDALC {
+
+	public static ContentValues createContentValuesToInsert(
+			WeatherTypeDTO rowData) {
+		ContentValues values = new ContentValues();
+		values.put("WeatherType", ((WeatherTypeDTO) rowData).getWeatherType());
+		values.put("DateAdded", ((WeatherTypeDTO) rowData).getDateAdded()
+				.toString());
+		return values;
+	}
+}
