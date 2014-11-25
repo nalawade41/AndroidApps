@@ -1,0 +1,261 @@
+package common.base.app.farmerfriend;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
+
+import common.base.app.farmerfriend.Classes.DTO.Location;
+import common.base.app.farmerfriend.Classes.Helper.WeatherSharedDataHolder;
+import common.base.app.farmerfriend.Classes.Parser.CurrentWeatherParser;
+import common.base.app.farmerfriend.Classes.Parser.IJsonParser;
+import common.base.app.farmerfriend.Classes.Result.CurrentWeatherResult;
+import android.support.v7.app.ActionBarActivity;
+import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+
+public class ShowWeatherActivity extends ActionBarActivity {
+
+	private static final String EXTRA_MESSAGE = "Extra_Message";
+	private static Location _weatherLocation;
+	private IJsonParser _parser;
+	private List<CurrentWeatherResult> _currentWeather;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_show_weather);
+		String value = getIntent().getStringExtra(EXTRA_MESSAGE);
+
+		if (WeatherSharedDataHolder.CityList != null
+				&& WeatherSharedDataHolder.CityList.length > 0) {
+			Boolean flagToBreak = false;
+			for (int i = 0; i < WeatherSharedDataHolder.CityList.length; i++) {
+				if (WeatherSharedDataHolder.CityList[i].equals(value)) {
+					for (Location location : WeatherSharedDataHolder.LocationList) {
+						if (location.getLocationName().equals(value)) {
+							_weatherLocation = location;
+							flagToBreak = true;
+							break;
+						}
+					}
+				}
+				if (flagToBreak)
+					break;
+			}
+		}
+		ProcessWeatherApi(value);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.show_weather, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void ProcessWeatherApi(String locationName) {
+		String url = "http://api.openweathermap.org/data/2.5/weather?q="
+				+ locationName + "&units=metric";
+		(new GetWeatherData()).execute(url);
+	}
+
+	private class GetWeatherData extends AsyncTask<String, String, String> {
+
+		@Override
+		protected String doInBackground(String... params) {
+			// progressDialog.show();
+			String urlString = params[0];
+			InputStream in = null;
+			try {
+				URL url = new URL(urlString);
+				HttpURLConnection connection = (HttpURLConnection) url
+						.openConnection();
+				in = new BufferedInputStream(connection.getInputStream());
+			} catch (Exception e) {
+				Log.e("Exception found ", e.getMessage());
+			}
+			if (in != null) {
+				try {
+					_parser = new CurrentWeatherParser();
+					_currentWeather = (List<CurrentWeatherResult>) (List) _parser
+							.readJsonStream(in);
+				} catch (Exception e) {
+				}
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// progressDialog = ProgressDialog.show(ShowWeatherActivity.this,
+			// "Weather Data", "Downloading weather data");
+			// progressDialog.setCancelable(false);
+		}
+
+		@SuppressWarnings("deprecation")
+		@SuppressLint({ "DefaultLocale", "SimpleDateFormat" })
+		@Override
+		protected void onPostExecute(String result) {
+			if (_currentWeather != null && _currentWeather.size() > 0) {
+				for (CurrentWeatherResult currentWeather : _currentWeather) {
+					Field[] property = currentWeather.getClass()
+							.getDeclaredFields();
+					((TextView) findViewById(R.id.tvWeatherCity))
+							.setText(currentWeather.getWeatherLocation());
+					((ScrollView) findViewById(R.id.sclvWeatherData))
+							.setVisibility(View.VISIBLE);
+					((ImageView) findViewById(R.id.imgvWeatherImgage))
+							.setImageDrawable(getWeatherImageNameToDisplay(currentWeather
+									.getWeatherStateId()));
+					((TextView) findViewById(R.id.tvWeatherDescription))
+							.setText(currentWeather.getWeatherDescription());
+					((TextView) findViewById(R.id.tvWeatherAvgTemp))
+							.setText(currentWeather.getAavarageTemperature());
+					((TextView) findViewById(R.id.tvWeatherMinTemp))
+							.setText(currentWeather.getMinTemperature());
+					((TextView) findViewById(R.id.tvWeatherMaxTemp))
+							.setText(currentWeather.getMaxTemperature());
+
+					for (int i = 0; i < property.length; i++) {
+						String attribute = toCamelCase(property[i].getName()
+								.substring(1).toLowerCase());
+						TableRow rowToAdd = new TableRow(getBaseContext());
+						TextView attributeView = new TextView(getBaseContext());
+						attributeView.setText(attribute);
+						try {
+							TextView valueView = new TextView(getBaseContext());
+							property[i].setAccessible(true);
+							Object value = property[i].get(currentWeather);
+							if (value != null) {
+								if (property[i].getType().isAssignableFrom(
+										Date.class)) {
+									
+									
+									valueView.setText(sdf.format(value));
+
+								} else {
+									valueView.setText(value.toString());
+								}
+								rowToAdd.addView(valueView);
+								rowToAdd.addView(attributeView);
+								((TableLayout) findViewById(R.id.tbllWeatherData))
+										.addView(rowToAdd);
+							}
+						} catch (Exception e) {
+							Log.e("error", "adfdsfsd");
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private Drawable getWeatherImageNameToDisplay(String weatherId) {
+		int num = Integer.valueOf(weatherId);
+		Drawable drawable = null;
+		if (isBetween(num, 200, 232)) {
+			drawable = getResources().getDrawable(
+					getResources().getIdentifier("ic_11d", "drawable",
+							this.getPackageName()));
+		} else if (isBetween(num, 300, 321)) {
+			drawable = getResources().getDrawable(
+					getResources().getIdentifier("ic_09d", "drawable",
+							this.getPackageName()));
+		} else if (isBetween(num, 500, 504)) {
+			drawable = getResources().getDrawable(
+					getResources().getIdentifier("ic_10d", "drawable",
+							this.getPackageName()));
+		} else if (isBetween(num, 511, 511)) {
+			drawable = getResources().getDrawable(
+					getResources().getIdentifier("ic_13d", "drawable",
+							this.getPackageName()));
+		} else if (isBetween(num, 520, 531)) {
+			drawable = getResources().getDrawable(
+					getResources().getIdentifier("ic_09d", "drawable",
+							this.getPackageName()));
+		} else if (isBetween(num, 600, 322)) {
+			drawable = getResources().getDrawable(
+					getResources().getIdentifier("ic_13d", "drawable",
+							this.getPackageName()));
+		} else if (isBetween(num, 701, 781)) {
+			drawable = getResources().getDrawable(
+					getResources().getIdentifier("ic_50d", "drawable",
+							this.getPackageName()));
+		} else if (isBetween(num, 800, 800)) {
+			drawable = getResources().getDrawable(
+					getResources().getIdentifier("ic_01d", "drawable",
+							this.getPackageName()));
+		} else if (isBetween(num, 801, 801)) {
+			drawable = getResources().getDrawable(
+					getResources().getIdentifier("ic_02d", "drawable",
+							this.getPackageName()));
+		} else if (isBetween(num, 802, 802)) {
+			drawable = getResources().getDrawable(
+					getResources().getIdentifier("ic_03d", "drawable",
+							this.getPackageName()));
+		} else if (isBetween(num, 803, 804)) {
+			drawable = getResources().getDrawable(
+					getResources().getIdentifier("ic_04d", "drawable",
+							this.getPackageName()));
+		}
+		return drawable;
+	}
+
+	private static boolean isBetween(int x, int lower, int upper) {
+		return lower <= x && x <= upper;
+	}
+
+	private static String toCamelCase(String s) {
+		String[] parts = s.split("_");
+		String camelCaseString = "";
+		for (String part : parts) {
+			camelCaseString += toProperCase(part);
+			camelCaseString += " ";
+		}
+		return camelCaseString;
+	}
+
+	@SuppressLint("DefaultLocale")
+	private static String toProperCase(String s) {
+		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+	}
+
+	private String getDateFormatString(String attribute) {
+		if (attribute.equalsIgnoreCase("Weather Date "))
+			return "EEE, dd MMM";
+		else
+			return "HH:mm:ss";
+	}
+
+}

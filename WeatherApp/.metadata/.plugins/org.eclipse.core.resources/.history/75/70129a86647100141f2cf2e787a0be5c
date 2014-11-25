@@ -1,0 +1,163 @@
+package common.base.app.farmerfriend.Classes.Parser;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+import android.util.*;
+import common.base.app.farmerfriend.Classes.Result.*;
+
+public class CurrentWeatherParser implements IJsonParser {
+
+	@Override
+	public List<IWebResult> readJsonStream(InputStream in) throws IOException {
+		JsonReader reader = new JsonReader(new InputStreamReader(in, Encoding));
+		try {
+			readeWeatherMessagesArray(reader);
+		} catch (Exception e) {
+			Log.e("error", e.getLocalizedMessage());
+			throw new IOException();
+		}
+		return null;
+	}
+
+	private List<IWebResult> readeWeatherMessagesArray(JsonReader reader)
+			throws IOException {
+		reader.beginObject();
+		String date;
+		CurrentWeatherResult result = new CurrentWeatherResult();
+		while (reader.hasNext()) {
+			String name = reader.nextName();
+			if (name.equals("sys")) {
+				readSunTimeings(reader);
+			} else if (name.equals("weather")) {
+				readWeatherInfromation(reader);
+			} else if (name.equals("base")) {
+				reader.skipValue();
+			} else if (name.equals("main")) {
+				readTempratureInformation(reader);
+			} else if (name.equals("wind")) {
+				readWindInformation(reader);
+			} else if (name.equals("clouds")) {
+				readCloudSpeed(reader);
+			} else if (name.equals("dt")) {
+				result.setWeatherDate(reader.nextString());
+			} else {
+				reader.skipValue();
+			}
+		}
+		reader.endObject();
+		List<IWebResult> resultToReturn = new ArrayList<IWebResult>();
+		resultToReturn.add(result);
+		return resultToReturn;
+	}
+
+	private CurrentWeatherResult readSunTimeings(JsonReader reader,
+			CurrentWeatherResult result) throws IOException {
+		reader.beginObject();
+		while (reader.hasNext()) {
+			String value = reader.nextName();
+			if (value.equals("sunrise")) {
+				result.setSunrise(reader.nextString());
+			} else if (value.equals("sunset")) {
+				result.setSunset(reader.nextString());
+			} else {
+				reader.skipValue();
+			}
+		}
+		reader.endObject();
+		return result;
+	}
+
+	private void readWeatherInfromation(JsonReader reader) throws IOException {
+		reader.beginArray();
+		String id;
+		String description;
+		String main;
+		while (reader.hasNext()) {
+			reader.beginObject();
+			while (reader.hasNext()) {
+				String value = reader.nextName();
+				if (value.equals("id")) {
+					id = reader.nextString();
+				} else if (value.equals("main")) {
+					main = reader.nextString();
+				} else if (value.equals("description")) {
+					description = reader.nextString();
+				} else {
+					reader.skipValue();
+				}
+			}
+			reader.endObject();
+		}
+		reader.endArray();
+	}
+
+	private void readTempratureInformation(JsonReader reader)
+			throws IOException {
+		reader.beginObject();
+		String temp;
+		String mintemp;
+		String maxtemp;
+		String pressure;
+		String sealevel;
+		String groundlevel;
+		String humidity;
+		while (reader.hasNext()) {
+			String value = reader.nextName();
+			if (value.equals("temp")) {
+				temp = reader.nextString();
+			} else if (value.equals("temp_min")) {
+				mintemp = reader.nextString();
+			} else if (value.equals("temp_max")) {
+				maxtemp = reader.nextString();
+			} else if (value.equals("pressure")) {
+				pressure = reader.nextString();
+			} else if (value.equals("sea_level")) {
+				sealevel = reader.nextString();
+			} else if (value.equals("ground_level")) {
+				groundlevel = reader.nextString();
+			} else if (value.equals("humidity")) {
+				humidity = reader.nextString();
+			} else {
+				reader.skipValue();
+			}
+		}
+		reader.endObject();
+	}
+
+	private void readWindInformation(JsonReader reader) throws IOException {
+		reader.beginObject();
+		String speed;
+		String deg;
+		while (reader.hasNext()) {
+			String value = reader.nextName();
+			if (value.equals("speed")) {
+				speed = reader.nextString();
+			} else if (value.equals("deg")) {
+				deg = reader.nextString();
+			} else {
+				reader.skipValue();
+			}
+		}
+		reader.endObject();
+	}
+
+	private void readCloudSpeed(JsonReader reader) throws IOException {
+		reader.beginObject();
+		String all;
+		while (reader.hasNext()) {
+			String value = reader.nextName();
+			if (value.equals("all")) {
+				all = reader.nextString();
+			} else {
+				reader.skipValue();
+			}
+		}
+		reader.endObject();
+	}
+
+}

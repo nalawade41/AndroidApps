@@ -1,0 +1,91 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="30dp"
+    android:orientation="vertical"
+    tools:context="common.base.app.farmerfriend.StartWeatherActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tvStateSelection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:tag="viewable"
+            android:text="@string/tvStateSelectionValue" />
+
+        <Spinner
+            android:id="@+id/spinStateSelection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="viewable"
+            android:textColor="#FF0000" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tvCitySelection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:tag="viewable"
+            android:text="@string/tvCitySelectionValue"
+            android:visibility="invisible" />
+
+        <AutoCompleteTextView
+            android:id="@+id/atvCitySelection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:hint="@string/atvCitySelection"
+            android:inputType="text"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tvLocalitySelection"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:tag="nonviewable"
+            android:text="@string/tvLocalitySelectionValue"
+            android:visibility="invisible" />
+
+        <Spinner
+            android:id="@+id/spinLocalitySelection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnShowWeather"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="showWeather"
+            android:tag="nonviewable"
+            android:text="@string/btnShowWeatherValue"
+            android:visibility="visible" />
+    </LinearLayout>
+
+</LinearLayout>

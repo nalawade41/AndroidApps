@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="30dp"
+    android:orientation="vertical"
+    tools:context="common.base.app.farmerfriend.StartAppActivity" >
+
+    <LinearLayout
+        android:id="@+id/linlaHeaderProgress"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <ProgressBar
+            android:id="@+id/pbHeaderProgress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateDrawable="@drawable/progress"
+            android:visibility="gone" >
+        </ProgressBar>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linlAcivityControls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvActivitySelection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="viewable"
+            android:text="@string/tvActivitySelectionValue" />
+
+        <Button
+            android:id="@+id/btnShowWeather"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="startWeather"
+            android:text="@string/btnShowWeatherValue"
+            android:visibility="visible" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,10 @@
+package common.base.app.farmerfriend.Classes.Helper;
+
+import java.util.List;
+
+public class SharedDataHolder {
+	public static String[] StateList;
+	public static String[] CityList;
+	public static String[] LocaleList;
+	public static List<Location> LocationList;
+}

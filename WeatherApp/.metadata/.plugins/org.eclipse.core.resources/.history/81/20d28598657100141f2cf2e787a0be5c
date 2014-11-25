@@ -1,0 +1,148 @@
+package common.base.app.farmerfriend.Classes.Parser;
+
+import java.io.*;
+import java.util.ArrayList;
+import android.util.*;
+import common.base.app.farmerfriend.Classes.Result.*;
+
+public class CurrentWeatherParser implements IJsonParser {
+
+	@Override
+	public List<IWebResult> readJsonStream(InputStream in) throws IOException {
+		JsonReader reader = new JsonReader(new InputStreamReader(in, Encoding));
+		try {
+			readeWeatherMessagesArray(reader);
+		} catch (Exception e) {
+			Log.e("error", e.getLocalizedMessage());
+			throw new IOException();
+		}
+		return null;
+	}
+
+	private List<IWebResult> readeWeatherMessagesArray(JsonReader reader)
+			throws IOException {
+		reader.beginObject();
+		CurrentWeatherResult result = new CurrentWeatherResult();
+		while (reader.hasNext()) {
+			String name = reader.nextName();
+			if (name.equals("sys")) {
+				result = readSunTimeings(reader, result);
+			} else if (name.equals("weather")) {
+				result =readWeatherInfromation(reader, result);
+			} else if (name.equals("main")) {
+				result =readTempratureInformation(reader, result);
+			} else if (name.equals("wind")) {
+				result =readWindInformation(reader, result);
+			} else if (name.equals("clouds")) {
+				result =readCloudSpeed(reader, result);
+			} else if (name.equals("dt")) {
+				result.setWeatherDate(reader.nextString());
+			} else {
+				reader.skipValue();
+			}
+		}
+		reader.endObject();
+		List<IWebResult> resultToReturn = new ArrayList<IWebResult>();
+		resultToReturn.add(result);
+		return resultToReturn;
+	}
+
+	private CurrentWeatherResult readSunTimeings(JsonReader reader,
+			CurrentWeatherResult result) throws IOException {
+		reader.beginObject();
+		while (reader.hasNext()) {
+			String value = reader.nextName();
+			if (value.equals("sunrise")) {
+				result.setSunrise(reader.nextString());
+			} else if (value.equals("sunset")) {
+				result.setSunset(reader.nextString());
+			} else {
+				reader.skipValue();
+			}
+		}
+		reader.endObject();
+		return result;
+	}
+
+	private CurrentWeatherResult readWeatherInfromation(JsonReader reader,
+			CurrentWeatherResult result) throws IOException {
+		reader.beginArray();
+		while (reader.hasNext()) {
+			reader.beginObject();
+			while (reader.hasNext()) {
+				String value = reader.nextName();
+				if (value.equals("id")) {
+					result.setWeatherStateId(reader.nextString());
+				} else if (value.equals("main")) {
+					result.setWeatherTitleMain(reader.nextString());
+				} else if (value.equals("description")) {
+					result.setWeatherDescription(reader.nextString());
+				} else {
+					reader.skipValue();
+				}
+			}
+			reader.endObject();
+		}
+		reader.endArray();
+		return result;
+	}
+
+	private CurrentWeatherResult readTempratureInformation(JsonReader reader,
+			CurrentWeatherResult result) throws IOException {
+		reader.beginObject();
+		while (reader.hasNext()) {
+			String value = reader.nextName();
+			if (value.equals("temp")) {
+				result.setAvarageTemperature(reader.nextString());
+			} else if (value.equals("temp_min")) {
+				result.setMinTemperature(reader.nextString());
+			} else if (value.equals("temp_max")) {
+				result.setMaxTemperature(reader.nextString());
+			} else if (value.equals("pressure")) {
+				result.setPressure(reader.nextString());
+			} else if (value.equals("sea_level")) {
+				result.setSeaLevel(reader.nextString());
+			} else if (value.equals("ground_level")) {
+				result.setGroundLevel(reader.nextString());
+			} else if (value.equals("humidity")) {
+				result.setHumidity(reader.nextString());
+			} else {
+				reader.skipValue();
+			}
+		}
+		reader.endObject();
+		return result;
+	}
+
+	private CurrentWeatherResult readWindInformation(JsonReader reader,
+			CurrentWeatherResult result) throws IOException {
+		reader.beginObject();
+		while (reader.hasNext()) {
+			String value = reader.nextName();
+			if (value.equals("speed")) {
+				result.setWindSpeed(reader.nextString());
+			} else if (value.equals("deg")) {
+				result.setWindDirection(reader.nextString());
+			} else {
+				reader.skipValue();
+			}
+		}
+		reader.endObject();
+		return result;
+	}
+
+	private CurrentWeatherResult readCloudSpeed(JsonReader reader,
+			CurrentWeatherResult result) throws IOException {
+		reader.beginObject();
+		while (reader.hasNext()) {
+			String value = reader.nextName();
+			if (value.equals("all")) {
+				result.setCloudsPrercent(reader.nextString());
+			} else {
+				reader.skipValue();
+			}
+		}
+		reader.endObject();
+		return result;
+	}
+}

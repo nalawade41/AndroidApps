@@ -1,0 +1,23 @@
+package common.base.app.farmerfriend.Classes.Parser;
+
+import java.io.InputStream;
+import java.util.List;
+
+import common.base.app.farmerfriend.Classes.Result.IWebResult;
+
+public class GeoNameParser implements IJsonParser{
+
+	@Override
+	public List<IWebResult> readJsonStream(InputStream in) {
+		JsonReader reader = new JsonReader(new InputStreamReader(in, _encoding));
+		try {
+			return readMessagesArray(reader);
+		} catch (Exception e) {
+			Log.e("error", e.getMessage());
+			throw new IOException();
+		} finally {
+			reader.close();
+		}
+	}
+
+}

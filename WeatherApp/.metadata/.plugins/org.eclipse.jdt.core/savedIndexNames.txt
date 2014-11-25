@@ -1,0 +1,5 @@
+INDEX VERSION 1.127+D:\WeatherApp\.metadata\.plugins\org.eclipse.jdt.core
+2376910751.index
+466224464.index
+1585369951.index
+1284074322.index

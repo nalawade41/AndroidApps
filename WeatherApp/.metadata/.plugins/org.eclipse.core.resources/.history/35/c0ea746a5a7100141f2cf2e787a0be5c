@@ -1,0 +1,182 @@
+package common.base.app.farmerfriend;
+
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+import common.base.app.farmerfriend.Classes.DTO.*;
+import common.base.app.farmerfriend.Classes.Helper.*;
+import common.base.app.farmerfriend.Classes.Parser.*;
+import common.base.app.farmerfriend.Classes.Result.*;
+import common.base.app.farmerfriend.Database.*;
+import android.support.v7.app.ActionBarActivity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.*;
+import android.util.Log;
+import android.view.*;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+public class StartAppActivity extends ActionBarActivity {
+
+	private static final String EXTRA_MESSAGE = "Extra_Message";
+	private IJsonParser _parser;
+	private static List<GeonameResult> _locationList = null;
+	private ProgressBar _progressBar;
+	private LinearLayout _activityControlsLayout;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_start_app);
+		runBasics();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.start_app, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void fetchLocationDataFromWeb() {
+		String url = "http://api.geonames.org/childrenJSON?geonameId=1264418&username=nalawade41";
+		(new GeonameAPIHelper()).execute(url);
+	}
+
+	public void startWeather(View view) {
+		Intent weatherIntent = new Intent(getBaseContext(),
+				StartWeatherActivity.class);
+		startActivity(weatherIntent);
+	}
+
+	public void tryAgain(View view) {
+		if (VerificationHelper.IsNetworkConnected(this))
+			runBasics();
+		else
+			(Toast.makeText(this, "Still no Internet.", Toast.LENGTH_LONG))
+					.show();
+	}
+
+	private void runBasics() {
+		if (VerificationHelper.IsNetworkConnected(this)) {
+			((LinearLayout) findViewById(R.id.linlAcivityErrors))
+					.setVisibility(View.GONE);
+			_activityControlsLayout = (LinearLayout) findViewById(R.id.linlAcivityControls);
+
+			// TODO data fetching succes
+			// validation
+			try {
+				FileInputStream reader = openFileInput("firstRun.data");
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						reader, "UTF-8"));
+				String line = br.readLine();
+				if (line.trim().equals("false")	&& VerificationHelper.IsLocationFetchSuccess()) {
+					_activityControlsLayout.setVisibility(View.VISIBLE);
+				}
+			} catch (Exception e) {
+				try {
+					(Toast.makeText(this,
+							"Downloading first run data. It will take 2 min.",
+							Toast.LENGTH_LONG)).show();
+					_progressBar = (ProgressBar) findViewById(R.id.pbHeaderProgress);
+					fetchLocationDataFromWeb();
+				} catch (Exception ex) {
+				}
+			}
+		} else {
+			((LinearLayout) findViewById(R.id.linlAcivityErrors))
+					.setVisibility(View.VISIBLE);
+		}
+	}
+
+	private class GeonameAPIHelper extends AsyncTask<String, String, String> {
+		LinearLayout linlaHeaderProgress = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			_progressBar.setVisibility(View.VISIBLE);
+			linlaHeaderProgress.setVisibility(View.VISIBLE);
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+
+			String urlString = params[0];
+			InputStream in = null;
+			try {
+				URL url = new URL(urlString);
+				HttpURLConnection connection = (HttpURLConnection) url
+						.openConnection();
+				in = new BufferedInputStream(connection.getInputStream());
+			} catch (Exception e) {
+				Log.e("Exception found ", e.getMessage());
+			}
+			if (in != null) {
+				try {
+					_parser = new GeoNameParser();
+					_locationList = (List<GeonameResult>) (List) _parser
+							.readJsonStream(in);
+				} catch (Exception e) {
+				}
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			if (_locationList != null && _locationList.size() > 0) {
+				DatabaseHelper dbHelper = new DatabaseHelper(
+						getApplicationContext());
+				HashMap<String, Integer> availableLocations = WeatherDatabaseHandler
+						.GetAvailableLocationTypes(getApplicationContext());
+				long locationTypeID;
+				for (GeonameResult apiResult : _locationList) {
+					Location locationToAdd = new Location(apiResult);
+					if (availableLocations != null
+							&& availableLocations
+									.containsKey(apiResult.LocationType)) {
+						locationTypeID = Long.valueOf(availableLocations
+								.get(apiResult.LocationType));
+					} else {
+						if (availableLocations == null)
+							availableLocations = new HashMap<String, Integer>();
+						LocationType locationTypeToAdd = new LocationType(
+								apiResult);
+						locationTypeID = dbHelper.insertRecord(
+								locationTypeToAdd,
+								DatabaseHelper.TABLE_LOCATIONTYPES);
+						availableLocations.put(
+								locationTypeToAdd.getLocationType(),
+								(int) locationTypeID);
+					}
+					locationToAdd.setLocationTypeID((int) locationTypeID);
+					dbHelper.insertRecord(locationToAdd,
+							DatabaseHelper.TABLE_LOCATIONS);
+				}
+				_progressBar.setVisibility(View.GONE);
+				linlaHeaderProgress.setVisibility(View.GONE);
+				_activityControlsLayout.setVisibility(View.VISIBLE);
+				VerificationHelper.IsFetchLocationSucces = true;
+			} else {
+				VerificationHelper.IsFetchLocationSucces = false;
+			}
+		}
+	}
+}

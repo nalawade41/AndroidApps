@@ -1,0 +1,169 @@
+package common.base.app.farmerfriend.Classes.Result;
+
+import java.util.Date;
+
+public class CurrentWeatherResult implements IWebResult {
+
+	public String _sunrise;
+	public String _sunset;
+	public String _weather_StateId;
+	public String _weather_Description;
+	public String _weather_Title;
+	public String _avg_Temperature;
+	public String _min_Temperature;
+	public String _max_Temperature;
+	public String _pressure;
+	public String _sea_Level;
+	public String _ground_Level;
+	public String _humidity;
+	public String _windSpeed;
+	public String _wind_Direction;
+	public String _clouds_Prercent;
+	public String _weather_Date;
+	public String _weather_LocationId;
+	public String _weather_Location;
+
+	public String getSunrise() {
+		return _sunrise;
+	}
+
+	public String getSunset() {
+		return _sunset;
+	}
+
+	public String getWeatherStateId() {
+		return _weather_StateId;
+	}
+
+	public String getWeatherDescription() {
+		return _weather_Description;
+	}
+
+	public String getWeatherTitleMain() {
+		return _weather_Title;
+	}
+
+	public String getAavarageTemperature() {
+		return _avg_Temperature;
+	}
+
+	public String getMinTemperature() {
+		return _min_Temperature;
+	}
+
+	public String getMaxTemperature() {
+		return _max_Temperature;
+	}
+
+	public String getPressure() {
+		return _pressure;
+	}
+
+	public String getSeaLevel() {
+		return _seaLevel;
+	}
+
+	public String getGroundLevel() {
+		return _groundLevel;
+	}
+
+	public String getHumidity() {
+		return _humidity;
+	}
+
+	public String getWindSpeed() {
+		return _windSpeed;
+	}
+
+	public String getWindDirection() {
+		return _windDirection;
+	}
+
+	public String getCloudsPrercent() {
+		return _cloudsPrercent;
+	}
+
+	public String getWeatherDate() {
+		return _weatherDate;
+	}
+
+	public String getWeatherLocationId() {
+		return _weatherLocationId;
+	}
+
+	public String getWeatherLocation() {
+		return _weatherLocation;
+	}
+
+	public void setSunrise(String _sunrise) {
+		this._sunrise = _sunrise;
+	}
+
+	public void setSunset(String _sunset) {
+		this._sunset = _sunset;
+	}
+
+	public void setWeatherStateId(String _weatherStateId) {
+		this._weatherStateId = _weatherStateId;
+	}
+
+	public void setWeatherDescription(String _weatherDescription) {
+		this._weatherDescription = _weatherDescription;
+	}
+
+	public void setWeatherTitleMain(String _weatherTitleMain) {
+		this._weatherTitleMain = _weatherTitleMain;
+	}
+
+	public void setAvarageTemperature(String _avgTemperature) {
+		this._avgTemperature = _avgTemperature;
+	}
+
+	public void setMinTemperature(String _minTemperature) {
+		this._minTemperature = _minTemperature;
+	}
+
+	public void setMaxTemperature(String _maxTemperature) {
+		this._maxTemperature = _maxTemperature;
+	}
+
+	public void setPressure(String _pressure) {
+		this._pressure = _pressure;
+	}
+
+	public void setSeaLevel(String _seaLevel) {
+		this._seaLevel = _seaLevel;
+	}
+
+	public void setGroundLevel(String _groundLevel) {
+		this._groundLevel = _groundLevel;
+	}
+
+	public void setHumidity(String _humidity) {
+		this._humidity = _humidity;
+	}
+
+	public void setWindSpeed(String _windSpeed) {
+		this._windSpeed = _windSpeed;
+	}
+
+	public void setWindDirection(String _windDirection) {
+		this._windDirection = _windDirection;
+	}
+
+	public void setCloudsPrercent(String _cloudsPrercent) {
+		this._cloudsPrercent = _cloudsPrercent;
+	}
+
+	public void setWeatherDate(String _weatherDate) {
+		this._weatherDate = new Date(Long.valueOf(_weatherDate)).toString();;
+	}
+
+	public void setWeatherLocationId(String _weatherLocationId) {
+		this._weatherLocationId = _weatherLocationId;
+	}
+
+	public void setWeatherLocation(String _weatherLocation) {
+		this._weatherLocation = _weatherLocation;
+	}
+}

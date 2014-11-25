@@ -1,0 +1,24 @@
+package common.base.app.farmerfriend.Classes.Helper;
+
+import common.base.app.farmerfriend.*;
+import android.content.Context;
+import android.widget.*;
+
+public class WeatherUIHelper {
+	public static void fillStateSelectionSpinner(Spinner stateSelector,
+			StartWeatherActivity listner) {
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+				listner, R.array.stateListForSpinner,
+				android.R.layout.simple_spinner_item);
+		stateSelector.setAdapter(adapter);
+		stateSelector.setOnItemSelectedListener(listner);
+	}
+
+	public static void fillCitySelectionAutoComplete(AutoCompleteTextView citySelector,Context context,StartWeatherActivity listner){
+		WeatherSharedDataHolder.CityList = WeatherDatabaseHandler.GetCityListToBind(context);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(listner,
+                android.R.layout.simple_dropdown_item_1line, WeatherSharedDataHolder.CityList);
+		citySelector.setAdapter(adapter);
+		citySelector.setOnItemClickListener(listner);
+	}
+}

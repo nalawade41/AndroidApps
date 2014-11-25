@@ -1,0 +1,12 @@
+package common.base.app.farmerfriend.Classes.Helper;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+
+public class VerificationHelper {
+
+	public Boolean IsNetworkConnected(Context context){
+		ConnectivityManager manager = (ConnectivityManager)context.getSystemService(context.CONNECTIVITY_SERVICE);
+		
+	}
+}

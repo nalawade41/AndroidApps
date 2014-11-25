@@ -1,0 +1,102 @@
+package common.base.app.farmerfriend.Classes.DTO;
+
+public class Location implements IDatabaseModels {
+	int _locationID;
+	String _locationName;
+	double _locationLatitude;
+	double _locationLongitude;
+	int _locationTypeID;
+	String _dateAdded;
+	String _geoNameID;
+
+	public Location() {
+	}
+
+	public Location(GeonameResult geoNameResult) {
+		this._dateAdded = (new Date()).toString();
+		this._locationLatitude = Double.valueOf(geoNameResult.Latitude);
+		this._locationLongitude = Double.valueOf(geoNameResult.Longitude);
+		this._geoNameID = geoNameResult.GeonameID;
+		this._locationName = geoNameResult.LocationName;
+	}
+
+	public Location(int locationID, String locationName,
+			double locationLatitude, double locationLongitude,
+			int locationTypeID, String geoNameID) {
+		this._dateAdded = (new Date()).toString();
+		this._locationID = locationID;
+		this._locationLatitude = locationLatitude;
+		this._locationLongitude = locationLongitude;
+		this._locationName = locationName;
+		this._locationTypeID = locationTypeID;
+		this._geoNameID = geoNameID;
+	}
+
+	public Location(String locationName, double locationLatitude,
+			double locationLongitude, int locationTypeID, String geoNameID) {
+		this._dateAdded = (new Date()).toString();
+		this._locationLatitude = locationLatitude;
+		this._locationLongitude = locationLongitude;
+		this._locationName = locationName;
+		this._locationTypeID = locationTypeID;
+		this._geoNameID = geoNameID;
+	}
+
+	// Setters and Getters
+
+	public String getGeoNameID() {
+		return _geoNameID;
+	}
+
+	public void setGeoNameID(String _geoNameID) {
+		this._geoNameID = _geoNameID;
+	}
+
+	public int getLocationID() {
+		return _locationID;
+	}
+
+	public void setLocationID(int _locationID) {
+		this._locationID = _locationID;
+	}
+
+	public String getLocationName() {
+		return _locationName;
+	}
+
+	public void setLocationName(String _locationName) {
+		this._locationName = _locationName;
+	}
+
+	public double getLocationLatitude() {
+		return _locationLatitude;
+	}
+
+	public void setLocationLatitude(double _locationLatitude) {
+		this._locationLatitude = _locationLatitude;
+	}
+
+	public double getLocationLongitude() {
+		return _locationLongitude;
+	}
+
+	public void setLocationLongitude(double _locationLongitude) {
+		this._locationLongitude = _locationLongitude;
+	}
+
+	public int getLocationTypeID() {
+		return _locationTypeID;
+	}
+
+	public void setLocationTypeID(int _locationTypeID) {
+		this._locationTypeID = _locationTypeID;
+	}
+
+	public String getDateAdded() {
+		return _dateAdded;
+	}
+
+	public void setDateAdded(String _dateAdded) {
+		this._dateAdded = (_dateAdded).toString();
+	}
+}

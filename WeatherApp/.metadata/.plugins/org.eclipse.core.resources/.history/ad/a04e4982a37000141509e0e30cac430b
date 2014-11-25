@@ -1,0 +1,5 @@
+package common.base.app.farmerfriend.Classes.DTO;
+
+public class Location {
+
+}

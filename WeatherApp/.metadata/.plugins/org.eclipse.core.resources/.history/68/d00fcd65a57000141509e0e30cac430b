@@ -1,0 +1,9 @@
+package common.base.app.farmerfriend.Classes.Parser;
+
+import java.util.List;
+
+import common.base.app.farmerfriend.Classes.Result.IWebResult;
+
+public interface IJsonParser {
+	public List<IWebResult>readJsonStream();
+}
