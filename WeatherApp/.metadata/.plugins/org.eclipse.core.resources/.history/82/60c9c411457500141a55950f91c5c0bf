@@ -1,0 +1,36 @@
+package common.base.app.farmerfriend.Classes.DTO;
+
+public enum WeatherConditionCodes {
+	CODE200("Thunderstorm with light rain"),
+	CODE201("Thunderstorm with rain"),
+	CODE202("Thunderstorm with heavy rain"),
+	CODE210("Thunderstorm with rain"),
+	CODE211("Thunderstorm with rain"),
+	CODE212("Thunderstorm with rain"),
+	CODE221("Thunderstorm with rain"),
+	CODE230("Thunderstorm with rain"),
+	CODE231("Thunderstorm with rain"),
+	CODE232("Thunderstorm with rain"),
+	CODE201("Thunderstorm with rain"),
+	CODE201("Thunderstorm with rain"),
+	CODE201("Thunderstorm with rain"),
+	CODE201("Thunderstorm with rain"),
+	CODE201("Thunderstorm with rain"),
+	CODE201("Thunderstorm with rain"),
+	CODE201("Thunderstorm with rain"),
+	CODE201("Thunderstorm with rain"),
+
+    private final String name;       
+
+    private WeatherConditionCodes(String s) {
+        name = s;
+    }
+
+    public boolean equalsName(String otherName){
+        return (otherName == null)? false:name.equals(otherName);
+    }
+
+    public String toString(){
+       return name;
+    }
+}

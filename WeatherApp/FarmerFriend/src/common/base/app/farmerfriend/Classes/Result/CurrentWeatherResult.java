@@ -2,7 +2,11 @@ package common.base.app.farmerfriend.Classes.Result;
 
 import java.util.Date;
 
-public class CurrentWeatherResult implements IWebResult {
+import common.base.app.farmerfriend.Classes.DTO.IDatabaseModels;
+import common.base.app.farmerfriend.Classes.DTO.WeatherDetailsDTO;
+import common.base.app.farmerfriend.Classes.Helper.MiscellaneousHelper;
+
+public class CurrentWeatherResult implements IWebResult,IDatabaseModels {
 
 	public Date _sunrise;
 	public Date _sunset;
@@ -22,6 +26,75 @@ public class CurrentWeatherResult implements IWebResult {
 	public Date _weather_Date;
 	private String _weather_LocationId;
 	public String _weather_Location;
+	private String _imageName;
+	private String _locationName;
+	private String _weatherFromDate;
+	private String _weatherToDate;
+
+	public CurrentWeatherResult() {
+
+	}
+
+	public CurrentWeatherResult(WeatherDetailsDTO detailsDTO) {
+		this._sunrise = detailsDTO.Sunrise;
+		this._sunset = detailsDTO.Sunset;
+		this._weather_StateId = detailsDTO.ConditionCode;
+		this._weather_Description = (MiscellaneousHelper.contains("CODE"
+				+ detailsDTO.ConditionCode.toString()) ? MiscellaneousHelper
+				.getValue("CODE" + detailsDTO.ConditionCode.toString())
+				: "Not Available");
+		this._weather_Title = (MiscellaneousHelper.contains("CODE"
+				+ detailsDTO.ConditionCode.toString()) ? MiscellaneousHelper
+				.getValue("CODE" + detailsDTO.ConditionCode.toString())
+				: "Not Available");
+		this._avg_Temperature = String.valueOf(detailsDTO.Temperature);
+		this._min_Temperature = String.valueOf(detailsDTO.MinTemperature);
+		this._max_Temperature = String.valueOf(detailsDTO.MaxTemperature);
+		this._pressure = String.valueOf(detailsDTO.Pressure);
+		this._sea_Level = String.valueOf(detailsDTO.PressureSea);
+		this._ground_Level = String.valueOf(detailsDTO.PressureGround);
+		this._humidity = String.valueOf(detailsDTO.Humidity);
+		this._wind_Speed = String.valueOf(detailsDTO.WindSpeed);
+		this._wind_Direction = String.valueOf(detailsDTO.WindDegree);
+		this._clouds_Prercent = String.valueOf(detailsDTO.Clouds);
+		this._weather_Date = detailsDTO.WeatherDate;
+		this._weather_LocationId = detailsDTO.WeatherLocationID;
+		this._weather_Location = detailsDTO.LocationName;
+		this._imageName = "";
+		this._locationName = "";
+	}
+
+	public String getWeatherFromDate() {
+		return _weatherFromDate;
+	}
+
+	public String getWeatherToDate() {
+		return _weatherToDate;
+	}
+
+	public void setWeatherFromDate(String _weatherFromDate) {
+		this._weatherFromDate = _weatherFromDate;
+	}
+
+	public void setWeatherToDate(String _weatherToDate) {
+		this._weatherToDate = _weatherToDate;
+	}
+
+	public String getLocationName() {
+		return _locationName;
+	}
+
+	public void setLocationName(String _locationName) {
+		this._locationName = _locationName;
+	}
+
+	public String getImageName() {
+		return _imageName;
+	}
+
+	public void setImageName(String _imageName) {
+		this._imageName = _imageName;
+	}
 
 	public String getSunrise() {
 		return _sunrise.toString() == "" || _sunrise == null ? "" : _sunrise

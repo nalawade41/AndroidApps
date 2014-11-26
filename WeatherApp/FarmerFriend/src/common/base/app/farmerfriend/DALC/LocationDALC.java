@@ -1,9 +1,6 @@
 package common.base.app.farmerfriend.DALC;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import java.util.*;
 import common.base.app.farmerfriend.Classes.DTO.LocationDTO;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -53,4 +50,9 @@ public class LocationDALC implements IDatabaseDALC {
 		return dataToReturn;
 	}
 
+	public static ContentValues updateLocationForWeatherDetailsID(String valueToUpdate) {
+		ContentValues values = new ContentValues();
+		values.put("WeatherLocationID", valueToUpdate);
+		return values;
+	}
 }

@@ -1,5 +1,7 @@
 package common.base.app.farmerfriend.Classes.Helper;
 
+import java.util.Date;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -29,7 +31,15 @@ public class VerificationHelper {
 		return false;
 	}
 
-	public static Boolean IsLocationFetchSuccess(){
+	public static Boolean IsLocationFetchSuccess() {
 		return IsFetchLocationSucces;
+	}
+
+	public static Boolean IsWeatherDetailsAvailable(Context context) {
+		if (WeatherDatabaseHandler.GetAvailableWeatherDetails(new Date(),
+				context).size() > 0) {
+			return true;
+		}
+		return false;
 	}
 }

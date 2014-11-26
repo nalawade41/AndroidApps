@@ -1,6 +1,7 @@
 package common.base.app.farmerfriend.Classes.Helper;
 
 import java.util.*;
+
 import common.base.app.farmerfriend.Classes.DTO.*;
 import common.base.app.farmerfriend.Database.*;
 import android.content.Context;
@@ -43,4 +44,23 @@ public class WeatherDatabaseHandler {
 		}
 		return null;
 	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static List<WeatherDetailsDTO> GetAvailableWeatherDetails(
+			Date weatherDate, Context context) {
+		dbExecuter = new DatabaseExecuter(context);
+		String sqlQuery = "SELECT *  FROM "
+				+ ITableDefination.TABLE_WEATHER_DETAILS
+				+ " WHERE WeatherDate = '" + weatherDate.toString()+"'";
+		List<Object> dataToReturn = dbExecuter.getTableData(sqlQuery,
+				ITableDefination.TABLE_WEATHER_DETAILS);
+		if (dataToReturn!= null && dataToReturn.size() > 0) {
+			WeatherSharedDataHolder.WeatherDetailsList = (List<WeatherDetailsDTO>) (List) (dataToReturn);
+		} else {
+			WeatherSharedDataHolder.WeatherDetailsList = new ArrayList<WeatherDetailsDTO>();
+		}
+		return WeatherSharedDataHolder.WeatherDetailsList;
+	}
+
+	
 }

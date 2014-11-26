@@ -7,47 +7,49 @@ import java.util.List;
 import android.content.ContentValues;
 import android.database.Cursor;
 import common.base.app.farmerfriend.Classes.DTO.*;
+import common.base.app.farmerfriend.Classes.Result.CurrentWeatherResult;
 
 public class WeatherDetailsDALC {
 
 	public static ContentValues createContentValuesToInsert(
-			WeatherDetailsDTO rowData) {
+			CurrentWeatherResult rowData) {
 		ContentValues values = new ContentValues();
 		values.put("LocationName",
-				((WeatherDetailsDTO) rowData).getLocationName());
-		values.put("WeatherLocationID", ((WeatherDetailsDTO) rowData)
-				.getWeatherLocationID().toString());
-		values.put("WeatherDate", ((WeatherDetailsDTO) rowData)
+				((CurrentWeatherResult) rowData).getLocationName());
+		values.put("WeatherLocationID", ((CurrentWeatherResult) rowData)
+				.getWeatherLocationId().toString());
+		values.put("WeatherDate", ((CurrentWeatherResult) rowData)
 				.getWeatherDate().toString());
-		values.put("Sunrise", ((WeatherDetailsDTO) rowData).getSunrise()
+		values.put("Sunrise", ((CurrentWeatherResult) rowData).getSunrise()
 				.toString());
-		values.put("Sunset", ((WeatherDetailsDTO) rowData).getSunset()
+		values.put("Sunset", ((CurrentWeatherResult) rowData).getSunset()
 				.toString());
 		values.put("Temperature",
-				((WeatherDetailsDTO) rowData).getTemperature());
+				((CurrentWeatherResult) rowData).getAavarageTemperature());
 		values.put("MinTemperature",
-				((WeatherDetailsDTO) rowData).getMinTemperature());
+				((CurrentWeatherResult) rowData).getMinTemperature());
 		values.put("MaxTemperature",
-				((WeatherDetailsDTO) rowData).getMaxTemperature());
-		values.put("Humidity", ((WeatherDetailsDTO) rowData).getHumidity());
-		values.put("Pressure", ((WeatherDetailsDTO) rowData).getPressure());
+				((CurrentWeatherResult) rowData).getMaxTemperature());
+		values.put("Humidity", ((CurrentWeatherResult) rowData).getHumidity());
+		values.put("Pressure", ((CurrentWeatherResult) rowData).getPressure());
 		values.put("PressureGround",
-				((WeatherDetailsDTO) rowData).getPressureGround());
+				((CurrentWeatherResult) rowData).getGroundLevel());
 		values.put("PressureSea",
-				((WeatherDetailsDTO) rowData).getPressureSea());
-		values.put("WindSpeed", ((WeatherDetailsDTO) rowData).getWindSpeed());
-		values.put("WindDegree", ((WeatherDetailsDTO) rowData).getWindDegree());
+				((CurrentWeatherResult) rowData).getSeaLevel());
+		values.put("WindSpeed", ((CurrentWeatherResult) rowData).getWindSpeed());
+		values.put("WindDegree",
+				((CurrentWeatherResult) rowData).getWindDirection());
 		values.put("ConditionCode",
-				((WeatherDetailsDTO) rowData).getConditionCode());
-		values.put("Clouds", ((WeatherDetailsDTO) rowData).getClouds());
-		values.put("WeatherDateFrom", ((WeatherDetailsDTO) rowData)
-				.getWeatherDateFrom().toString());
-		values.put("WeatherDateTo", ((WeatherDetailsDTO) rowData)
-				.getWeatherDateTo().toString());
-		values.put("IsValidData",
-				((WeatherDetailsDTO) rowData).getIsValidData());
-		values.put("DateAdded", ((WeatherDetailsDTO) rowData).getDateAdded()
-				.toString());
+				((CurrentWeatherResult) rowData).getWeatherStateId());
+		values.put("Clouds",
+				((CurrentWeatherResult) rowData).getCloudsPrercent());
+		values.put("WeatherDateFrom", ((CurrentWeatherResult) rowData)
+				.getWeatherFromDate().toString());
+		values.put("WeatherDateTo", ((CurrentWeatherResult) rowData)
+				.getWeatherToDate().toString());
+		values.put("IsValidData", "0");
+		values.put("WeatherTypeID", "");
+		values.put("DateAdded", (new Date()).toString());
 		return values;
 	}
 
@@ -74,6 +76,7 @@ public class WeatherDetailsDALC {
 		int weatherDateFromIndex = reader.getColumnIndex("WeatherDateFrom");
 		int weatherDateToIndex = reader.getColumnIndex("WeatherDateTo");
 		int isValidDataIndex = reader.getColumnIndex("IsValidData");
+		int weatherTypeIDIndex = reader.getColumnIndex("WeatherTypeID");
 		int dateAddedIndex = reader.getColumnIndex("DateAdded");
 		do {
 			WeatherDetailsDTO dataRow = new WeatherDetailsDTO();
@@ -107,6 +110,7 @@ public class WeatherDetailsDALC {
 			dataRow.setWeatherDateTo(new Date(reader
 					.getString(weatherDateToIndex)));
 			dataRow.setIsValidData(reader.getInt(isValidDataIndex));
+			dataRow.setWeatherTypeID(reader.getInt(weatherTypeIDIndex));
 			dataRow.setDateAdded(new Date(reader.getString(dateAddedIndex)));
 			dataToReturn.add(dataRow);
 		} while (reader.moveToNext());

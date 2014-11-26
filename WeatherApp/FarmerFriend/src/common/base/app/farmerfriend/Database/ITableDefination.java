@@ -6,7 +6,7 @@ public interface ITableDefination {
 	public static final int DATABASE_VERSION = 1;
 	// Database Name
 	public static final String DATABASE_NAME = "myFarmDatabase";
-	
+
 	// Table Names
 	public static final String TABLE_LOCATIONS = "Locations";
 	public static final String TABLE_LOCATIONTYPES = "LocationTypes";
@@ -39,7 +39,8 @@ public interface ITableDefination {
 			+ " PressureSea REAL," + " ConditionCode TEXT,"
 			+ " WindSpeed REAL," + " WindDegree REAL," + " Clouds TEXT,"
 			+ " WeatherDateFrom DATETIME," + " WeatherDateTo DATETIME,"
-			+ " IsValidData INTEGER," + ADDED_TIME_KEY + " DATETIME" + ")";
+			+ " IsValidData INTEGER," + " WeatherTypeID INTEGER,"
+			+ ADDED_TIME_KEY + " DATETIME" + ")";
 
 	public static final String CREATE_TABLE_WEATHEER_TYPE = "CREATE TABLE "
 			+ TABLE_WEATHEER_TYPE + "(" + "WeatherType" + PRIMARY_KEY
@@ -56,7 +57,6 @@ public interface ITableDefination {
 			+ " Description TEXT,"
 			+ " ImageName TEXT,"
 			+ ADDED_TIME_KEY
-			+ " DATETIME"
-			+ ")";
+			+ " DATETIME" + ")";
 
 }

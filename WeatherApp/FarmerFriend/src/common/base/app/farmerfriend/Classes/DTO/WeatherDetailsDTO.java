@@ -2,7 +2,9 @@ package common.base.app.farmerfriend.Classes.DTO;
 
 import java.util.Date;
 
-public class WeatherDetailsDTO implements IDatabaseModels {
+
+
+public class WeatherDetailsDTO implements IDatabaseModels{
 
 	public int WeatherDetailsID;
 	public String LocationName;
@@ -24,6 +26,7 @@ public class WeatherDetailsDTO implements IDatabaseModels {
 	public Date WeatherDateFrom;
 	public Date WeatherDateTo;
 	public int IsValidData;
+	public int WeatherTypeID;
 	public Date DateAdded;
 
 	public WeatherDetailsDTO() {
@@ -32,6 +35,14 @@ public class WeatherDetailsDTO implements IDatabaseModels {
 
 	public int getWeatherDetailsID() {
 		return WeatherDetailsID;
+	}
+
+	public int getWeatherTypeID() {
+		return WeatherTypeID;
+	}
+
+	public void setWeatherTypeID(int weatherTypeID) {
+		WeatherTypeID = weatherTypeID;
 	}
 
 	public String getLocationName() {

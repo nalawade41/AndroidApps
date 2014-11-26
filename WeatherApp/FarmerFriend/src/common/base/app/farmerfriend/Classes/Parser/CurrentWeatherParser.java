@@ -22,15 +22,19 @@ public class CurrentWeatherParser implements IJsonParser {
 			if (name.equals("sys")) {
 				result = readSunTimeings(reader, result);
 			} else if (name.equals("weather")) {
-				result =readWeatherInfromation(reader, result);
+				result = readWeatherInfromation(reader, result);
 			} else if (name.equals("main")) {
-				result =readTempratureInformation(reader, result);
+				result = readTempratureInformation(reader, result);
 			} else if (name.equals("wind")) {
-				result =readWindInformation(reader, result);
+				result = readWindInformation(reader, result);
 			} else if (name.equals("clouds")) {
-				result =readCloudSpeed(reader, result);
+				result = readCloudSpeed(reader, result);
 			} else if (name.equals("dt")) {
 				result.setWeatherDate(reader.nextString());
+			} else if (name.equals("id")) {
+				result.setWeatherLocationId(reader.nextString());
+			} else if (name.equals("name")) {
+				result.setLocationName(reader.nextString());
 			} else {
 				reader.skipValue();
 			}
@@ -71,6 +75,8 @@ public class CurrentWeatherParser implements IJsonParser {
 					result.setWeatherTitleMain(reader.nextString());
 				} else if (value.equals("description")) {
 					result.setWeatherDescription(reader.nextString());
+				} else if (value.equals("icon")) {
+					result.setImageName(reader.nextString());
 				} else {
 					reader.skipValue();
 				}
@@ -85,7 +91,7 @@ public class CurrentWeatherParser implements IJsonParser {
 			CurrentWeatherResult result) throws IOException {
 		reader.beginObject();
 		while (reader.hasNext()) {
-			String name  = reader.nextName();
+			String name = reader.nextName();
 			if (name.equals("temp")) {
 				result.setAvarageTemperature(reader.nextString());
 			} else if (name.equals("temp_min")) {

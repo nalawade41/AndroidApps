@@ -1,0 +1,19 @@
+package common.base.app.farmerfriend.Classes.DTO;
+
+public enum WeatherConditionCodes {
+	
+
+    private final String name;       
+
+    private WeatherConditionCodes(String s) {
+        name = s;
+    }
+
+    public boolean equalsName(String otherName){
+        return (otherName == null)? false:name.equals(otherName);
+    }
+
+    public String toString(){
+       return name;
+    }
+}

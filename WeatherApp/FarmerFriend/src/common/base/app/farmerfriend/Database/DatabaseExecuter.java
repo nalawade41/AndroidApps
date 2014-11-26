@@ -1,11 +1,14 @@
 package common.base.app.farmerfriend.Database;
 
 import java.util.*;
+
 import common.base.app.farmerfriend.Classes.DTO.*;
+import common.base.app.farmerfriend.Classes.Result.CurrentWeatherResult;
 import common.base.app.farmerfriend.DALC.*;
 import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.UrlQuerySanitizer.ValueSanitizer;
 
 public class DatabaseExecuter implements ITableDefination {
 
@@ -40,7 +43,7 @@ public class DatabaseExecuter implements ITableDefination {
 			} else if (rowData instanceof LocationTypeDTO) {
 				values =  LocationTypeDALC.createContentValuesToInsert((LocationTypeDTO)rowData);
 			} else if (rowData instanceof WeatherDetailsDTO) {
-				values =  WeatherDetailsDALC.createContentValuesToInsert((WeatherDetailsDTO)rowData);
+				values =  WeatherDetailsDALC.createContentValuesToInsert((CurrentWeatherResult)rowData);
 			}else if (rowData instanceof WeatherTypeDTO) {
 				values =  WeatherTypeDALC.createContentValuesToInsert((WeatherTypeDTO)rowData);
 			}else if (rowData instanceof WeatherConditionCodeDTO) {
@@ -74,4 +77,8 @@ public class DatabaseExecuter implements ITableDefination {
 		return dataToReturn;
 	}
 
+	public  void updateLocationForWeatherLocationID(String valueToUpdate,String conditionValue){
+		ContentValues value = LocationDALC.updateLocationForWeatherDetailsID(valueToUpdate);
+		_dataBaseHelper.updateRecord(value, TABLE_LOCATIONS, conditionValue);
+	} 
 }

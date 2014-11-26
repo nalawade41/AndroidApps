@@ -1,0 +1,59 @@
+package common.base.app.farmerfriend.Classes.DTO;
+
+public enum WeatherConditionCodes {
+	CODE200("Thunderstorm with light rain"),
+	CODE201("Thunderstorm with rain"),
+	CODE202("Thunderstorm with heavy rain"),
+	CODE210("Light thunderstorm"),
+	CODE211("Thunderstorm"),
+	CODE212("Heavy thunderstorm"),
+	CODE221("Ragged Thunderstorm"),
+	CODE230("Thunderstorm with light drizzle"),
+	CODE231("Thunderstorm with drizzle"),
+	CODE232("Thunderstorm with heavy drizzle"),
+	CODE300("Light intensity drizzle"),
+	CODE301("Drizzle"),
+	CODE302("Heavy intensity drizzle"),
+	CODE310("Light intensity drizzle rain"),
+	CODE311("Drizzle rain"),
+	CODE312("Heavy intensity drizzle rain"),
+	CODE313("Shower rain and drizzle"),
+	CODE314("Heavy shower rain and drizzle"),
+	CODE321("shower drizzle"),
+	CODE500("Light rain"),
+	CODE501("Moderate  rain"),
+	CODE502("Heavy intensity rain"),
+	CODE503("Very heavy rain"),
+	CODE504("Extreme rain"),
+	CODE511("Freezing rain"),
+	CODE520("Light intensity shower rain"),
+	CODE521("Light intensity shower rain"),
+	CODE522("Heavy intensity shower rain"),
+	CODE531("Ragged shower rain"),
+	CODE600("Light snow"),
+	CODE601("Snow"),
+	CODE602("Heavy snow"),
+	CODE603("Very heavy rain"),
+	CODE604("Extreme rain"),
+	CODE611("Freezing rain"),
+	CODE620("Light intensity shower rain"),
+	CODE621("Light intensity shower rain"),
+	CODE622("Heavy intensity shower rain"),
+	CODE631("Ragged shower rain"),
+	
+	
+	
+    private final String name;       
+
+    private WeatherConditionCodes(String s) {
+        name = s;
+    }
+
+    public boolean equalsName(String otherName){
+        return (otherName == null)? false:name.equals(otherName);
+    }
+
+    public String toString(){
+       return name;
+    }
+}

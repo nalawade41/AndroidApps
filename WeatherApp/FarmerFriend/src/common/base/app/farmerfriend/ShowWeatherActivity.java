@@ -5,12 +5,15 @@ import java.lang.reflect.Field;
 import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 import common.base.app.farmerfriend.Classes.DTO.*;
 import common.base.app.farmerfriend.Classes.Helper.*;
 import common.base.app.farmerfriend.Classes.Parser.*;
 import common.base.app.farmerfriend.Classes.Result.CurrentWeatherResult;
+import common.base.app.farmerfriend.Database.DatabaseExecuter;
 import android.support.v7.app.ActionBarActivity;
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +27,7 @@ public class ShowWeatherActivity extends ActionBarActivity {
 	private static LocationDTO _weatherLocation;
 	private IJsonParser _parser;
 	private List<CurrentWeatherResult> _currentWeather;
+	private static Boolean _presentAtLocal;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +79,7 @@ public class ShowWeatherActivity extends ActionBarActivity {
 		String url = "http://api.openweathermap.org/data/2.5/weather?q="
 				+ locationName + "&units=metric";
 		(new GetWeatherData()).execute(url);
+		(new SaveCurrentWeatherData()).execute("");
 	}
 
 	private class GetWeatherData extends AsyncTask<String, String, String> {
@@ -82,23 +87,27 @@ public class ShowWeatherActivity extends ActionBarActivity {
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
 		protected String doInBackground(String... params) {
-			// progressDialog.show();
-			String urlString = params[0];
-			InputStream in = null;
-			try {
-				URL url = new URL(urlString);
-				HttpURLConnection connection = (HttpURLConnection) url
-						.openConnection();
-				in = new BufferedInputStream(connection.getInputStream());
-			} catch (Exception e) {
-				Log.e("Exception found ", e.getMessage());
-			}
-			if (in != null) {
+
+			if (VerificationHelper.IsWeatherDetailsAvailable(getBaseContext())) {
+				_presentAtLocal = true;
+			} else {
+				_presentAtLocal = false;
+				String urlString = params[0];
+				InputStream in = null;
 				try {
-					_parser = new CurrentWeatherParser();
-					_currentWeather = (List<CurrentWeatherResult>) (List) _parser
-							.readJsonStream(in);
+					URL url = new URL(urlString);
+					HttpURLConnection connection = (HttpURLConnection) url
+							.openConnection();
+					in = new BufferedInputStream(connection.getInputStream());
 				} catch (Exception e) {
+					Log.e("Exception found ", e.getMessage());
+				}
+				if (in != null) {
+					try {
+						_parser = new CurrentWeatherParser();
+						_currentWeather = (List) (_parser.readJsonStream(in));
+					} catch (Exception e) {
+					}
 				}
 			}
 			return null;
@@ -109,71 +118,48 @@ public class ShowWeatherActivity extends ActionBarActivity {
 
 		}
 
-		@SuppressLint({ "DefaultLocale", "SimpleDateFormat" })
 		@Override
 		protected void onPostExecute(String result) {
+			if (_presentAtLocal)
+				_currentWeather = ValidationHelper.convertToWeatherList();
+
 			if (_currentWeather != null && _currentWeather.size() > 0) {
-				for (CurrentWeatherResult currentWeather : _currentWeather) {
-					Field[] property = currentWeather.getClass()
-							.getDeclaredFields();
-					((TextView) findViewById(R.id.tvWeatherCity))
-							.setText(currentWeather.getWeatherLocation());
-					((ScrollView) findViewById(R.id.sclvWeatherData))
-							.setVisibility(View.VISIBLE);
-					((ImageView) findViewById(R.id.imgvWeatherImgage))
-							.setImageDrawable(WeatherUIHelper
-									.getWeatherImageNameToDisplay(
-											ShowWeatherActivity.this,
-											currentWeather.getWeatherStateId()));
-					((TextView) findViewById(R.id.tvWeatherDescription))
-							.setText(currentWeather.getWeatherDescription());
-					((TextView) findViewById(R.id.tvWeatherAvgTemp))
-							.setText(currentWeather.getAavarageTemperature());
-					((TextView) findViewById(R.id.tvWeatherMinTemp))
-							.setText(currentWeather.getMinTemperature());
-					((TextView) findViewById(R.id.tvWeatherMaxTemp))
-							.setText(currentWeather.getMaxTemperature());
-
-					for (int i = 0; i < property.length; i++) {
-						try {
-							TextView valueView = new TextView(getBaseContext());
-							Object value = property[i].get(currentWeather);
-							if (value != null) {
-								if (property[i].getType().isAssignableFrom(
-										Date.class)) {
-									valueView
-											.setText(new SimpleDateFormat(
-													ValidationHelper
-															.getDateFormatString(MiscellaneousHelper
-																	.toCamelCase(property[i]
-																			.getName()
-																			.substring(
-																					1)
-																			.toLowerCase())))
-													.format(value).toString());
-
-								} else {
-									valueView.setText(value.toString());
-								}
-								TableRow rowToAdd = new TableRow(
-										getBaseContext());
-								TextView attributeView = new TextView(
-										getBaseContext());
-
-								attributeView.setText(MiscellaneousHelper
-										.toCamelCase(property[i].getName()
-												.substring(1).toLowerCase()));
-								rowToAdd.addView(attributeView);
-								rowToAdd.addView(valueView);
-								((TableLayout) findViewById(R.id.tbllWeatherData))
-										.addView(rowToAdd);
-							}
-						} catch (Exception e) {
-							Log.e("error", "adfdsfsd");
-						}
-					}
-				}
+				WeatherUIHelper.showCurrentWeatherDataOnScreen(
+						ShowWeatherActivity.this, _currentWeather);
 			}
 		}
 	}
+
+	private class SaveCurrentWeatherData extends
+			AsyncTask<String, String, String> {
+
+		protected void onPreExecute() {
+
+		}
+
+		protected void onPostExecute() {
+
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			if (_currentWeather != null && _currentWeather.size() > 0) {
+				for (CurrentWeatherResult recordToSave : _currentWeather) {
+					DatabaseExecuter dbExecuter = new DatabaseExecuter(
+							getBaseContext());
+					if (_weatherLocation.getWeatherLocationID() != ""
+							&& _weatherLocation.getWeatherLocationID()
+									.equalsIgnoreCase("0")) {
+						dbExecuter.updateLocationForWeatherLocationID(
+								recordToSave.getWeatherLocationId(),
+								" LocationName " + "="
+										+ _weatherLocation.getLocationName());
+					}
+					dbExecuter.insertTableData(recordToSave,DatabaseExecuter.TABLE_WEATHER_DETAILS);
+				}
+			}
+			return null;
+		}
+	}
+
 }

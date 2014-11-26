@@ -52,7 +52,9 @@ public class GeoNameParser implements IJsonParser {
 			} else if (name.equals("geonameId")) {
 				result.GeonameID = String.valueOf(reader.nextLong());
 			} else if (name.equals("name")) {
-				result.LocationName = reader.nextString();
+				String value = reader.nextString();
+				value = value.replace("Division", "").replace("District", "");
+				result.LocationName = value.trim();
 			} else if (name.equals("fcodeName")) {
 				String valueOfLocationType = reader.nextString();
 				result.LocationType = valueOfLocationType

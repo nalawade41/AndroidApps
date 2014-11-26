@@ -32,6 +32,10 @@ public class DatabaseHelper extends SQLiteOpenHelper implements
 		return  this.getReadableDatabase().rawQuery(sqlQuery, null);
 	}
 
+	public void updateRecord(ContentValues values,String tableName,String condition){
+		this.getReadableDatabase().update(tableName, values, condition, null);
+	} 
+	
 	public void FirstRunDeletion(Context context) {
 		context.deleteDatabase(DATABASE_NAME);
 	}

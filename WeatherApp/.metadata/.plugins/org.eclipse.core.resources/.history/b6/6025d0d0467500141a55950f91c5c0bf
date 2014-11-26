@@ -1,0 +1,91 @@
+package common.base.app.farmerfriend.Classes.DTO;
+
+public enum WeatherConditionCodes {
+	CODE200("Thunderstorm with light rain"),
+	CODE201("Thunderstorm with rain"),
+	CODE202("Thunderstorm with heavy rain"),
+	CODE210("Light thunderstorm"),
+	CODE211("Thunderstorm"),
+	CODE212("Heavy thunderstorm"),
+	CODE221("Ragged Thunderstorm"),
+	CODE230("Thunderstorm with light drizzle"),
+	CODE231("Thunderstorm with drizzle"),
+	CODE232("Thunderstorm with heavy drizzle"),
+	CODE300("Light intensity drizzle"),
+	CODE301("Drizzle"),
+	CODE302("Heavy intensity drizzle"),
+	CODE310("Light intensity drizzle rain"),
+	CODE311("Drizzle rain"),
+	CODE312("Heavy intensity drizzle rain"),
+	CODE313("Shower rain and drizzle"),
+	CODE314("Heavy shower rain and drizzle"),
+	CODE321("shower drizzle"),
+	CODE500("Light rain"),
+	CODE501("Moderate  rain"),
+	CODE502("Heavy intensity rain"),
+	CODE503("Very heavy rain"),
+	CODE504("Extreme rain"),
+	CODE511("Freezing rain"),
+	CODE520("Light intensity shower rain"),
+	CODE521("Light intensity shower rain"),
+	CODE522("Heavy intensity shower rain"),
+	CODE531("Ragged shower rain"),
+	CODE600("Light snow"),
+	CODE601("Snow"),
+	CODE602("Heavy snow"),
+	CODE611("Sleet"),
+	CODE612("Shower sleet"),
+	CODE615("Light rain and snow"),
+	CODE616("Rain and snow"),
+	CODE620("Light shower snow"),
+	CODE621("Shower snow"),
+	CODE622("Heavy shower snow"),
+	CODE701("Mist"),
+	CODE711("Smoke"),
+	CODE721("haze"),
+	CODE731("sand, dust whirls"),
+	CODE741("fog"),
+	CODE751("sand"),
+	CODE761("dust"),
+	CODE762("volcanic ash"),
+	CODE771("squalls"),
+	CODE781("tornado"),
+	CODE800("clear sky"),
+	CODE801("few clouds"),
+	CODE802("scattered clouds"),
+	CODE803("broken clouds"),
+	CODE804("overcast clouds"),
+	CODE900("tornado"),
+	CODE901("tropical storm"),
+	CODE902("hurricane"),
+	CODE903("cold"),
+	CODE904("hot"),
+	CODE905("windy"),
+	CODE906("hail"),
+	CODE950("tornado"),
+	CODE951("tropical storm"),
+	CODE952("hurricane"),
+	CODE953("cold"),
+	CODE954("hot"),
+	CODE955("windy"),
+	CODE956("hail"),
+	CODE957("hurricane"),
+	CODE958("cold"),
+	CODE959("hot"),
+	CODE960("windy"),
+	CODE961("hail"),
+	CODE962("hail");
+    private final String name;       
+
+    private WeatherConditionCodes(String s) {
+        name = s;
+    }
+
+    public boolean equalsName(String otherName){
+        return (otherName == null)? false:name.equals(otherName);
+    }
+
+    public String toString(){
+       return name;
+    }
+}
