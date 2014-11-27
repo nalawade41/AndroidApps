@@ -1,12 +1,13 @@
 package common.base.app.farmerfriend.Classes.Result;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import common.base.app.farmerfriend.Classes.DTO.IDatabaseModels;
 import common.base.app.farmerfriend.Classes.DTO.WeatherDetailsDTO;
 import common.base.app.farmerfriend.Classes.Helper.MiscellaneousHelper;
 
-public class CurrentWeatherResult implements IWebResult,IDatabaseModels {
+public class CurrentWeatherResult implements IWebResult, IDatabaseModels {
 
 	public Date _sunrise;
 	public Date _sunset;
@@ -28,8 +29,8 @@ public class CurrentWeatherResult implements IWebResult,IDatabaseModels {
 	public String _weather_Location;
 	private String _imageName;
 	private String _locationName;
-	private String _weatherFromDate;
-	private String _weatherToDate;
+	private Date _weatherFromDate;
+	private Date _weatherToDate;
 
 	public CurrentWeatherResult() {
 
@@ -65,19 +66,27 @@ public class CurrentWeatherResult implements IWebResult,IDatabaseModels {
 	}
 
 	public String getWeatherFromDate() {
-		return _weatherFromDate;
+		if (_weatherFromDate != null && _weatherFromDate.toString() != "") {
+			return MiscellaneousHelper.getFormattedDate("MM/dd/yyyy",
+					_weatherFromDate);
+		}
+		return "";
 	}
 
 	public String getWeatherToDate() {
-		return _weatherToDate;
+		if (_weatherToDate != null && _weatherToDate.toString() != "") {
+			return MiscellaneousHelper.getFormattedDate("MM/dd/yyyy",
+					_weatherToDate);
+		}
+		return "";
 	}
 
 	public void setWeatherFromDate(String _weatherFromDate) {
-		this._weatherFromDate = _weatherFromDate;
+		this._weatherFromDate = new Date(_weatherFromDate);
 	}
 
 	public void setWeatherToDate(String _weatherToDate) {
-		this._weatherToDate = _weatherToDate;
+		this._weatherToDate = new Date(_weatherToDate);
 	}
 
 	public String getLocationName() {
@@ -168,8 +177,11 @@ public class CurrentWeatherResult implements IWebResult,IDatabaseModels {
 	}
 
 	public String getWeatherDate() {
-		return _weather_Date.toString() == "" || _weather_Date == null ? ""
-				: _weather_Date.toString();
+		if (_weather_Date != null && _weather_Date.toString() != "") {
+			return MiscellaneousHelper.getFormattedDate("MM/dd/yyyy",
+					_weather_Date);
+		}
+		return "";
 	}
 
 	public String getWeatherLocationId() {

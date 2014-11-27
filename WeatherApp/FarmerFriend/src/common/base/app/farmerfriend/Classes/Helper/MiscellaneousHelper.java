@@ -1,7 +1,9 @@
 package common.base.app.farmerfriend.Classes.Helper;
 
-import common.base.app.farmerfriend.Classes.DTO.WeatherConditionCodes;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import common.base.app.farmerfriend.Classes.DTO.WeatherConditionCodes;
 import android.annotation.SuppressLint;
 
 public class MiscellaneousHelper {
@@ -38,5 +40,9 @@ public class MiscellaneousHelper {
 	        }
 	    }
 	    return null;
+	}
+
+	public static String getFormattedDate(String format,Date date){
+		return new SimpleDateFormat(format).format(date);
 	}
 }

@@ -51,10 +51,12 @@ public class WeatherDatabaseHandler {
 		dbExecuter = new DatabaseExecuter(context);
 		String sqlQuery = "SELECT *  FROM "
 				+ ITableDefination.TABLE_WEATHER_DETAILS
-				+ " WHERE WeatherDate = '" + weatherDate.toString()+"'";
+				+ " WHERE WeatherDate = '"
+				+ MiscellaneousHelper.getFormattedDate("MM/dd/yyyy",
+						weatherDate) + "'";
 		List<Object> dataToReturn = dbExecuter.getTableData(sqlQuery,
 				ITableDefination.TABLE_WEATHER_DETAILS);
-		if (dataToReturn!= null && dataToReturn.size() > 0) {
+		if (dataToReturn != null && dataToReturn.size() > 0) {
 			WeatherSharedDataHolder.WeatherDetailsList = (List<WeatherDetailsDTO>) (List) (dataToReturn);
 		} else {
 			WeatherSharedDataHolder.WeatherDetailsList = new ArrayList<WeatherDetailsDTO>();
@@ -62,5 +64,4 @@ public class WeatherDatabaseHandler {
 		return WeatherSharedDataHolder.WeatherDetailsList;
 	}
 
-	
 }

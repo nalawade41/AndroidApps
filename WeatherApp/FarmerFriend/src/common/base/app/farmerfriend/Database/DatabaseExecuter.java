@@ -42,7 +42,7 @@ public class DatabaseExecuter implements ITableDefination {
 				values =  LocationDALC.createContentValuesToInsert((LocationDTO)rowData);
 			} else if (rowData instanceof LocationTypeDTO) {
 				values =  LocationTypeDALC.createContentValuesToInsert((LocationTypeDTO)rowData);
-			} else if (rowData instanceof WeatherDetailsDTO) {
+			} else if (rowData instanceof CurrentWeatherResult) {
 				values =  WeatherDetailsDALC.createContentValuesToInsert((CurrentWeatherResult)rowData);
 			}else if (rowData instanceof WeatherTypeDTO) {
 				values =  WeatherTypeDALC.createContentValuesToInsert((WeatherTypeDTO)rowData);

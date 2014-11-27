@@ -148,14 +148,15 @@ public class ShowWeatherActivity extends ActionBarActivity {
 					DatabaseExecuter dbExecuter = new DatabaseExecuter(
 							getBaseContext());
 					if (_weatherLocation.getWeatherLocationID() != ""
-							&& _weatherLocation.getWeatherLocationID()
+							&& !_weatherLocation.getWeatherLocationID()
 									.equalsIgnoreCase("0")) {
 						dbExecuter.updateLocationForWeatherLocationID(
 								recordToSave.getWeatherLocationId(),
-								" LocationName " + "="
-										+ _weatherLocation.getLocationName());
+								" LocationName " + "= '"
+										+ _weatherLocation.getLocationName()+"'");
 					}
-					dbExecuter.insertTableData(recordToSave,DatabaseExecuter.TABLE_WEATHER_DETAILS);
+					dbExecuter.insertTableData(recordToSave,
+							DatabaseExecuter.TABLE_WEATHER_DETAILS);
 				}
 			}
 			return null;

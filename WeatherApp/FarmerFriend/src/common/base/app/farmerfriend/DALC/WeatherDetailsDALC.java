@@ -48,7 +48,7 @@ public class WeatherDetailsDALC {
 		values.put("WeatherDateTo", ((CurrentWeatherResult) rowData)
 				.getWeatherToDate().toString());
 		values.put("IsValidData", "0");
-		values.put("WeatherTypeID", "");
+		values.put("WeatherTypeID", "0");
 		values.put("DateAdded", (new Date()).toString());
 		return values;
 	}
@@ -102,13 +102,16 @@ public class WeatherDetailsDALC {
 			dataRow.setConditionCode(reader.getString(conditionCodeIndex));
 			dataRow.setWindSpeed(Double.valueOf(reader
 					.getString(windSpeedIndex)));
+			
 			dataRow.setWindDegree(Double.valueOf(reader
 					.getString(windDegreeIndex)));
 			dataRow.setClouds(reader.getString(cloudsIndex));
-			dataRow.setWeatherDateFrom(new Date(reader
-					.getString(weatherDateFromIndex)));
-			dataRow.setWeatherDateTo(new Date(reader
-					.getString(weatherDateToIndex)));
+			String value = reader.getString(weatherDateFromIndex);
+			if (value != null && value.trim().length() != 0) {
+				dataRow.setWeatherDateFrom(new Date(value));
+				dataRow.setWeatherDateTo(new Date(reader
+						.getString(weatherDateToIndex)));
+			}
 			dataRow.setIsValidData(reader.getInt(isValidDataIndex));
 			dataRow.setWeatherTypeID(reader.getInt(weatherTypeIDIndex));
 			dataRow.setDateAdded(new Date(reader.getString(dateAddedIndex)));
