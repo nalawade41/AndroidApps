@@ -52,7 +52,8 @@ public class ShowWeatherActivity extends ActionBarActivity {
 					break;
 			}
 		}
-		ProcessWeatherApi();
+		ProcessWeatherApi(value);
+
 	}
 
 	@Override
@@ -74,14 +75,11 @@ public class ShowWeatherActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void ProcessWeatherApi() {
-		if (_weatherLocation != null) {
-			String url = "http://api.openweathermap.org/data/2.5/weather?q="
-					+ _weatherLocation.LocationName + "&units=metric";
-			(new GetWeatherData()).execute(url);
-			(new SaveCurrentWeatherData())
-					.execute(_weatherLocation.LocationName);
-		}
+	private void ProcessWeatherApi(String locationName) {
+		String url = "http://api.openweathermap.org/data/2.5/weather?q="
+				+ locationName + "&units=metric";
+		(new GetWeatherData()).execute(url);
+		(new SaveCurrentWeatherData()).execute("");
 	}
 
 	private class GetWeatherData extends AsyncTask<String, String, String> {
@@ -89,9 +87,8 @@ public class ShowWeatherActivity extends ActionBarActivity {
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
 		protected String doInBackground(String... params) {
-			String location = params[0];
-			if (VerificationHelper.IsWeatherDetailsAvailable(location,
-					getBaseContext())) {
+
+			if (VerificationHelper.IsWeatherDetailsAvailable(getBaseContext())) {
 				_presentAtLocal = true;
 			} else {
 				_presentAtLocal = false;
@@ -156,8 +153,7 @@ public class ShowWeatherActivity extends ActionBarActivity {
 						dbExecuter.updateLocationForWeatherLocationID(
 								recordToSave.getWeatherLocationId(),
 								" LocationName " + "= '"
-										+ _weatherLocation.getLocationName()
-										+ "'");
+										+ _weatherLocation.getLocationName()+"'");
 					}
 					dbExecuter.insertTableData(recordToSave,
 							DatabaseExecuter.TABLE_WEATHER_DETAILS);

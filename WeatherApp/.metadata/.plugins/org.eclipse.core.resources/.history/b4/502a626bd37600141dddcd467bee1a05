@@ -52,7 +52,6 @@ public class ShowWeatherActivity extends ActionBarActivity {
 					break;
 			}
 		}
-		ProcessWeatherApi();
 	}
 
 	@Override
@@ -74,14 +73,11 @@ public class ShowWeatherActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void ProcessWeatherApi() {
-		if (_weatherLocation != null) {
-			String url = "http://api.openweathermap.org/data/2.5/weather?q="
-					+ _weatherLocation.LocationName + "&units=metric";
-			(new GetWeatherData()).execute(url);
-			(new SaveCurrentWeatherData())
-					.execute(_weatherLocation.LocationName);
-		}
+	private void ProcessWeatherApi(String locationName) {
+		String url = "http://api.openweathermap.org/data/2.5/weather?q="
+				+ locationName + "&units=metric";
+		(new GetWeatherData()).execute(url);
+		(new SaveCurrentWeatherData()).execute(_weatherLocation.LocationName);
 	}
 
 	private class GetWeatherData extends AsyncTask<String, String, String> {

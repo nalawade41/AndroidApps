@@ -47,13 +47,13 @@ public class WeatherDatabaseHandler {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static List<WeatherDetailsDTO> GetAvailableWeatherDetails(
-			Date weatherDate, String location,Context context) {
+			Date weatherDate, Context context) {
 		dbExecuter = new DatabaseExecuter(context);
 		String sqlQuery = "SELECT *  FROM "
 				+ ITableDefination.TABLE_WEATHER_DETAILS
 				+ " WHERE WeatherDate = '"
 				+ MiscellaneousHelper.getFormattedDate("MM/dd/yyyy",
-						weatherDate) + "' AND LocationName = '"+ location +"'";
+						weatherDate) + "'";
 		List<Object> dataToReturn = dbExecuter.getTableData(sqlQuery,
 				ITableDefination.TABLE_WEATHER_DETAILS);
 		if (dataToReturn != null && dataToReturn.size() > 0) {

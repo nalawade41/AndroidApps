@@ -35,10 +35,9 @@ public class VerificationHelper {
 		return IsFetchLocationSucces;
 	}
 
-	public static Boolean IsWeatherDetailsAvailable(String location,
-			Context context) {
+	public static Boolean IsWeatherDetailsAvailable(Context context) {
 		if (WeatherDatabaseHandler.GetAvailableWeatherDetails(new Date(),
-				location, context).size() > 0) {
+				context).size() > 0) {
 			return true;
 		}
 		return false;
